@@ -13,8 +13,8 @@ package ac.soton.scxml.eventb.strings;
 import java.text.MessageFormat;
 
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.sirius.tests.sample.scxml.ScxmlAssignType;
-import org.eclipse.sirius.tests.sample.scxml.ScxmlDataType;
+import ac.soton.scxml.ScxmlAssignType;
+import ac.soton.scxml.ScxmlDataType;
 
 import ac.soton.scxml.eventb.rules.Trigger;
 

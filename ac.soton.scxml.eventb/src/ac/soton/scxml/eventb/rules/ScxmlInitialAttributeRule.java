@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.sirius.tests.sample.scxml.ScxmlScxmlType;
+import ac.soton.scxml.ScxmlScxmlType;
 import org.eventb.emf.core.machine.Event;
 import org.eventb.emf.core.machine.Machine;
 import org.eventb.emf.core.machine.MachinePackage;
