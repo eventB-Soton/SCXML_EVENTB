@@ -15,8 +15,8 @@ import java.util.List;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.sirius.tests.sample.scxml.ScxmlPackage;
-import org.eclipse.sirius.tests.sample.scxml.ScxmlScxmlType;
+import ac.soton.scxml.ScxmlPackage;
+import ac.soton.scxml.ScxmlScxmlType;
 
 import ac.soton.emf.translator.configuration.IRule;
 import ac.soton.emf.translator.eventb.rules.AbstractEventBGeneratorRule;

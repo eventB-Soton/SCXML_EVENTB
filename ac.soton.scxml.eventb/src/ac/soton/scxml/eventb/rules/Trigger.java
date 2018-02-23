@@ -13,11 +13,11 @@ import java.util.Set;
 
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.sirius.tests.sample.scxml.ScxmlInitialType;
-import org.eclipse.sirius.tests.sample.scxml.ScxmlParallelType;
-import org.eclipse.sirius.tests.sample.scxml.ScxmlRaiseType;
-import org.eclipse.sirius.tests.sample.scxml.ScxmlStateType;
-import org.eclipse.sirius.tests.sample.scxml.ScxmlTransitionType;
+import ac.soton.scxml.ScxmlInitialType;
+import ac.soton.scxml.ScxmlParallelType;
+import ac.soton.scxml.ScxmlRaiseType;
+import ac.soton.scxml.ScxmlStateType;
+import ac.soton.scxml.ScxmlTransitionType;
 
 import ac.soton.scxml.eventb.utils.Utils;
 

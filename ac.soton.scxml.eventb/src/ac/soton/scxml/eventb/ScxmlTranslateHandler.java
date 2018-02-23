@@ -12,7 +12,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.workspace.util.WorkspaceSynchronizer;
-import org.eclipse.sirius.tests.sample.scxml.DocumentRoot;
+import ac.soton.scxml.DocumentRoot;
 import org.eventb.emf.core.EventBNamedCommentedComponentElement;
 import org.eventb.emf.persistence.EMFRodinDB;
 
