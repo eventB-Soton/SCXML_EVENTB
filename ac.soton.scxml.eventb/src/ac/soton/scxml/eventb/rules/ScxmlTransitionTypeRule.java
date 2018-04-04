@@ -66,7 +66,7 @@ public class ScxmlTransitionTypeRule extends AbstractSCXMLImporterRule implement
 		ScxmlStateType stateContainer = (ScxmlStateType) Find.containing(ScxmlPackage.Literals.SCXML_STATE_TYPE, sourceElement.eContainer().eContainer());
 		ScxmlScxmlType scxmlContainer = (ScxmlScxmlType) Find.containing(ScxmlPackage.Literals.SCXML_SCXML_TYPE, sourceElement);
 		refinements.clear();
-		int refinementLevel = Utils.getRefinementLevel(stateContainer==null? scxmlContainer : stateContainer);
+		int refinementLevel = Utils.getRefinementLevel(sourceElement); 
 		int depth = getRefinementDepth(sourceElement);		
 		String parentSmName = (stateContainer==null? scxmlContainer.getName() : stateContainer.getId())+"_sm";
 		

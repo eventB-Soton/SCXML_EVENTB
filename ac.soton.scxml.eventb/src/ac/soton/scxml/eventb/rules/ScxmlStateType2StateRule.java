@@ -64,7 +64,7 @@ public class ScxmlStateType2StateRule extends AbstractSCXMLImporterRule implemen
 	@Override
 	public boolean dependenciesOK(EObject sourceElement, final List<TranslationDescriptor> translatedElements) throws Exception  {
 		refinements.clear();
-		int refinementLevel = Utils.getRefinementLevel(sourceElement.eContainer()); //refinement level is from the parent, not this ScxmlState. 
+		int refinementLevel = Utils.getRefinementLevel(sourceElement);  
 		int depth = getRefinementDepth(sourceElement);
 		for (int i=refinementLevel; i<=depth; i++){
 			Machine m = (Machine) Find.translatedElement(translatedElements, null, null, MachinePackage.Literals.MACHINE, Utils.getMachineName(scxmlContainer,i));

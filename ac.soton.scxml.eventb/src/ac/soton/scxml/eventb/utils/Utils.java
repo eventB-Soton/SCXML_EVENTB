@@ -116,7 +116,9 @@ public class Utils {
 	
 	/**
 	 * Returns the starting refinement level for this scxml element
-	 * This is given in a 'refinement' iumlb:attribute attached to the element,
+	 * The refinement level of a transition is always the same as its parent (recursively).
+	 * The refinement level of a state, final or initial is always the same as its parent's annotated level (non-recursively)...
+	 * The refinement level is  given in a 'refinement' iumlb:attribute attached to the element,
 	 * or, if none, the refinement level of its parent,
 	 * or, if none, 0
 	 * 
@@ -124,7 +126,16 @@ public class Utils {
 	 * @return
 	 */
 	public static int getRefinementLevel(EObject scxmlElement){
-		return new IumlbScxmlAdapter(scxmlElement).getRefinementLevel();
+		if (scxmlElement instanceof ScxmlTransitionType) {
+			return getRefinementLevel(scxmlElement.eContainer());
+		}else if (
+				scxmlElement instanceof ScxmlStateType || 
+				scxmlElement instanceof ScxmlFinalType ||
+				scxmlElement instanceof ScxmlInitialType){
+			return new IumlbScxmlAdapter(scxmlElement.eContainer()).getRefinementLevel();
+		}else{
+			return new IumlbScxmlAdapter(scxmlElement).getRefinementLevel();
+		}
 	}
 	
 	/**

@@ -75,7 +75,7 @@ public class ScxmlInitialTransitionTypeRule extends AbstractSCXMLImporterRule im
 		boolean dependOnIncomers = parentState==null? false :  isATarget(parentState);
 		
 		refinements.clear();
-		int refinementLevel = Utils.getRefinementLevel(stateContainer==null? scxmlContainer : stateContainer);
+		int refinementLevel = Utils.getRefinementLevel(sourceElement);
 		int depth = getRefinementDepth(sourceElement);		
 		String parentSmName = (stateContainer==null? scxmlContainer.getName() : stateContainer.getId())+"_sm";
 		
