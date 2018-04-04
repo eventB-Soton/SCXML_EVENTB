@@ -107,7 +107,7 @@ public class Utils {
 		}
 		//add trigger guard at the correct refinement level
 		//(this is done as a descriptor so that the translator can decide whether it is needed (it may already be there by extension)
-		if (!"null".equals(trigger.getName()) && ref.level>trigger.getRefinementLevel()){
+		if (!"null".equals(trigger.getName()) && ref.level>=trigger.getRefinementLevel()){
 			Guard trig = (Guard) Make.guard(Strings.trigGd_Name, false, Strings.trigGd_Predicate(trigger), Strings.trigGd_Comment);
 			descriptors.add(Make.descriptor(ev,MachinePackage.Literals.EVENT__GUARDS,trig,0));
 		}
