@@ -57,11 +57,21 @@ public class Strings {
 	}
 	
 	public static  String INIT_ACTION;
+	public static  String INIT_ACTION_ND;
 	public static  String INIT_ACTION(ScxmlDataType scxml) {
-		return bind(INIT_ACTION,
-				convertLocation(scxml.getId()),
-				convertBoolVals(scxml.getExpr())
-				);
+		if (scxml.getExpr().startsWith("::")) {
+			return bind(INIT_ACTION_ND,
+					convertLocation(scxml.getId()),
+					convertBoolVals(
+							convertBuiltInSets(
+									scxml.getExpr().substring(2)))
+					);			
+		}else {
+			return bind(INIT_ACTION,
+					convertLocation(scxml.getId()),
+					convertBoolVals(scxml.getExpr())
+					);
+		}
 	}
 
 	public static String TYPE_PREDICATE;
@@ -73,13 +83,22 @@ public class Strings {
 	}
 
 	public static String ASSIGN_ACTION;
-
+	public static String ASSIGN_ACTION_ND;
 
 	public static String ASSIGN_ACTION(ScxmlAssignType assign) {
-		return bind(ASSIGN_ACTION,
-				convertLocation(assign.getLocation()),
-				convertBoolVals(assign.getExpr())
-				);
+		if (assign.getExpr().startsWith("::")) {
+			return bind(ASSIGN_ACTION_ND,
+					convertLocation(assign.getLocation()),
+					convertBoolVals(
+							convertBuiltInSets(
+									assign.getExpr().substring(2)))
+					);			
+		}else {
+			return bind(ASSIGN_ACTION,
+					convertLocation(assign.getLocation()),
+					convertBoolVals(assign.getExpr())
+					);
+		}
 	}
 	
 	public static String COND_GUARD(String cond) {
@@ -136,6 +155,13 @@ public class Strings {
 
 	private static String convertLocation(String location){
 		return location==null? "<null>": location.replaceAll("\\.", "_");
+	}
+	
+	private static String convertBuiltInSets(String expr) {
+		return expr==null? "<null>": 
+			expr.replaceAll("\\bNAT\\b", "\u2115").
+				replaceAll("\\bINT\\b", "\u2124").
+				replaceAll("\\bPOW\\b", "\u2119");
 	}
 
 	/**
