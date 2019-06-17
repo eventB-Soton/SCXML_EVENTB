@@ -12,6 +12,7 @@ package ac.soton.scxml.eventb.strings;
 
 import java.text.MessageFormat;
 
+import org.rodinp.keyboard.ui.RodinKeyboardUIPlugin;
 import org.eclipse.osgi.util.NLS;
 import ac.soton.scxml.ScxmlAssignType;
 import ac.soton.scxml.ScxmlDataType;
@@ -63,7 +64,7 @@ public class Strings {
 			return bind(INIT_ACTION_ND,
 					convertLocation(scxml.getId()),
 					convertBoolVals(
-							convertBuiltInSets(
+							convertToRodin(
 									scxml.getExpr().substring(2)))
 					);			
 		}else {
@@ -78,7 +79,7 @@ public class Strings {
 	public static String TYPE_PREDICATE(String id, String type) {
 		return bind(TYPE_PREDICATE,
 				convertLocation(id),
-				type
+				convertToRodin(type)
 				);
 	}
 
@@ -90,13 +91,18 @@ public class Strings {
 			return bind(ASSIGN_ACTION_ND,
 					convertLocation(assign.getLocation()),
 					convertBoolVals(
-							convertBuiltInSets(
-									assign.getExpr().substring(2)))
+							convertToRodin(
+								assign.getExpr().substring(2))
+							)
 					);			
 		}else {
 			return bind(ASSIGN_ACTION,
-					convertLocation(assign.getLocation()),
-					convertBoolVals(assign.getExpr())
+						convertLocation(assign.getLocation()),
+						convertBoolVals(
+							convertToRodin(
+								assign.getExpr()
+							)
+						)
 					);
 		}
 	}
@@ -106,7 +112,8 @@ public class Strings {
 				convertLocation(
 					convertBoolVals(
 						convertDoubleEquals(
-								cond))));
+							convertToRodin(
+								cond)))));
 	}
 	
 	public static String INV_PREDICATE(String anticedent, ScxmlDataType scxml) {
@@ -121,20 +128,13 @@ public class Strings {
 		String pred = convertLocation(
 				convertBoolVals(
 				convertDoubleEquals(
-				convertIn(		predicate)
+				convertToRodin(
+						predicate)
 				)));
 		return pred;
 	}
 	
 	////
-	
-	/**
-	 * @param predicate
-	 * @return
-	 */
-	private static String convertIn(String predicate) {
-		return predicate==null?  "<null>": predicate.replaceAll(":", "\u2208");
-	}
 
 	private static String convertDoubleEquals(String expr) {
 		return expr==null? "<null>": expr.replaceAll("==", "=");
@@ -149,28 +149,18 @@ public class Strings {
 		}
 	}
 
+	private static String convertToRodin(String expr) {
+		String str = RodinKeyboardUIPlugin.getDefault().translate(expr);
+		System.out.println(expr+" -> "+str);
+		return str;
+	}
+	
 	private static String convertBoolVals(String expr) {
 		return expr==null? "<null>": expr.replaceAll("\\btrue\\b", "TRUE").replaceAll("\\bfalse\\b", "FALSE");
 	}
 
 	private static String convertLocation(String location){
 		return location==null? "<null>": location.replaceAll("\\.", "_");
-	}
-	
-	private static String convertBuiltInSets(String expr) {
-		return expr==null? "<null>": 
-			expr.replaceAll("\\bNAT\\b", "\u2115").
-				replaceAll("\\bINT\\b", "\u2124").
-				replaceAll("\\bPOW\\b", "\u2119");
-	}
-
-	/**
-	 * @param string
-	 * @return
-	 */
-	public static String ACT_ASSIGN(String action) {
-		// TODO Auto-generated method stub
-		return action==null? "<null>": action.replaceAll(":=", "\u2254"); 
 	}
 	
 
