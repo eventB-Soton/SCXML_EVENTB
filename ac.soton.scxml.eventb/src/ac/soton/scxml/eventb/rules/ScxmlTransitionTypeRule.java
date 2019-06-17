@@ -62,9 +62,16 @@ public class ScxmlTransitionTypeRule extends AbstractSCXMLImporterRule implement
 	
 	@Override
 	public boolean dependenciesOK(EObject sourceElement, final List<TranslationDescriptor> generatedElements) throws Exception  {
-		
-		ScxmlStateType stateContainer = (ScxmlStateType) Find.containing(ScxmlPackage.Literals.SCXML_STATE_TYPE, sourceElement.eContainer().eContainer());
 		ScxmlScxmlType scxmlContainer = (ScxmlScxmlType) Find.containing(ScxmlPackage.Literals.SCXML_SCXML_TYPE, sourceElement);
+		ScxmlStateType stateContainer = (ScxmlStateType) Find.containing(ScxmlPackage.Literals.SCXML_STATE_TYPE, sourceElement.eContainer().eContainer());
+		if (sourceElement.eContainer().eContainer().eClass() ==ScxmlPackage.Literals.SCXML_PARALLEL_TYPE && 
+				stateContainer!=null) {
+			if(stateContainer.eContainer().eClass() == ScxmlPackage.Literals.SCXML_STATE_TYPE ){
+				stateContainer = (ScxmlStateType) stateContainer.eContainer();
+			}else {
+				stateContainer = null;
+			}
+		}
 		refinements.clear();
 		int refinementLevel = Utils.getRefinementLevel(sourceElement); 
 		int depth = getRefinementDepth(sourceElement);		
