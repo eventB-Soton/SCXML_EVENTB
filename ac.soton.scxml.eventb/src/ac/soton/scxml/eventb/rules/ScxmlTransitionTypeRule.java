@@ -157,7 +157,7 @@ public class ScxmlTransitionTypeRule extends AbstractSCXMLImporterRule implement
 				if (!"".equals(raiseList) || finalised==true){  
 					raiseList = "".equals(raiseList)? "\u2205" : "{"+raiseList+" }";
 					Guard guard =  (Guard) Make.guard(
-							Strings.specificRaisedInternalTriggersGuardName,false,
+							Strings.specificRaisedInternalTriggersGuardName+ref.level,false,
 							Strings.specificRaisedInternalTriggersGuardPredicate(raiseList, finalised),
 							Strings.specificRaisedInternalTriggersGuardComment); 
 					transition.getGuards().add(guard);
