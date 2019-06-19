@@ -70,7 +70,10 @@ public class Strings {
 		}else {
 			return bind(INIT_ACTION,
 					convertLocation(scxml.getId()),
-					convertBoolVals(scxml.getExpr())
+					convertBoolVals(
+							convertToRodin(
+									scxml.getExpr())
+							)
 					);
 		}
 	}
