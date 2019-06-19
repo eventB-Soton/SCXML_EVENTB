@@ -75,6 +75,16 @@
                source_class="ScxmlDataType">
          </rule>
          <rule
+               name="ScxmlDataTypeConstantRule"
+               rule_class="ac.soton.scxml.eventb.rules.ScxmlDataTypeConstantRule"
+               source_class="ScxmlDataType">
+         </rule>
+         <rule
+               name="ScxmlDataTypeCarrierSetRule"
+               rule_class="ac.soton.scxml.eventb.rules.ScxmlDataTypeCarrierSetRule"
+               source_class="ScxmlDataType">
+         </rule>
+         <rule
                name="ScxmlStateType2StateRule"
                rule_class="ac.soton.scxml.eventb.rules.ScxmlStateType2StateRule"
                source_class="ScxmlStateType">
