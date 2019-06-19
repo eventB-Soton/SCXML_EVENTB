@@ -160,7 +160,7 @@ public class IumlbScxmlAdapter {
 
 	public boolean isVariable() {
 		Object dataKind = getAnyAttributeValue("dataKind");
-		return (dataKind instanceof String && "Variable".equalsIgnoreCase(((String)dataKind).trim()));
+		return (!(dataKind instanceof String) ||  "Variable".equalsIgnoreCase(((String)dataKind).trim()));
 	}
 	
 	public boolean isConstant() {
