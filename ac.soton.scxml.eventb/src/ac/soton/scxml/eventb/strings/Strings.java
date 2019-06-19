@@ -77,6 +77,28 @@ public class Strings {
 					);
 		}
 	}
+	
+	// predicate used in an axiom for setting the value of a constant (can be nondeterministic)
+	public static  String VALUE_PREDICATE;
+	public static  String VALUE_PREDICATE_ND;
+	public static  String VALUE_PREDICATE(ScxmlDataType scxml) {
+		if (scxml.getExpr().startsWith("::")) {
+			return bind(VALUE_PREDICATE_ND,
+					convertLocation(scxml.getId()),
+					convertBoolVals(
+							convertToRodin(
+									scxml.getExpr().substring(2)))
+					);			
+		}else {
+			return bind(VALUE_PREDICATE,
+					convertLocation(scxml.getId()),
+					convertBoolVals(
+							convertToRodin(
+									scxml.getExpr())
+							)
+					);
+		}
+	}
 
 	public static String TYPE_PREDICATE;
 	public static String TYPE_PREDICATE(String id, String type) {
