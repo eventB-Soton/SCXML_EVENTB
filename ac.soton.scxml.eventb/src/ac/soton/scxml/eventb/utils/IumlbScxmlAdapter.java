@@ -170,7 +170,7 @@ public class IumlbScxmlAdapter {
 	
 	public boolean isCarrierSet() {
 		Object dataKind = getAnyAttributeValue("dataKind");
-		return (dataKind instanceof String && "Set".equalsIgnoreCase(((String)dataKind).trim()));
+		return (dataKind instanceof String && "CarrierSet".equalsIgnoreCase(((String)dataKind).trim()));
 	}
 
 }
