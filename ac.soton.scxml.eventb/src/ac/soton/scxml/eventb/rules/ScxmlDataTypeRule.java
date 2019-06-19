@@ -33,6 +33,7 @@ import ac.soton.emf.translator.utils.Find;
 import ac.soton.eventb.statemachines.State;
 import ac.soton.eventb.statemachines.StatemachinesPackage;
 import ac.soton.scxml.eventb.strings.Strings;
+import ac.soton.scxml.eventb.utils.IumlbScxmlAdapter;
 import ac.soton.scxml.eventb.utils.Make;
 import ac.soton.scxml.eventb.utils.Utils;
 
@@ -50,6 +51,9 @@ public class ScxmlDataTypeRule extends AbstractSCXMLImporterRule implements IRul
 	@Override
 	public boolean enabled(final EObject sourceElement) throws Exception  {
 		if ("Refinement".equals(((ScxmlDataType)sourceElement).getId())){
+			return false;
+		}
+		if (!(new IumlbScxmlAdapter((ScxmlDataType)sourceElement).isVariable())) {
 			return false;
 		}
 		scxmlContainer = (ScxmlScxmlType) Find.containing(ScxmlPackage.Literals.SCXML_SCXML_TYPE, sourceElement);
