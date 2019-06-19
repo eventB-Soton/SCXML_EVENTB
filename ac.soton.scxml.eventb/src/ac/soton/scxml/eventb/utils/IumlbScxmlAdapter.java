@@ -157,5 +157,20 @@ public class IumlbScxmlAdapter {
 	public List<IumlbScxmlAdapter> getGuards() {
 		return getAnyChildren("guard");	
 	}
-		
+
+	public boolean isVariable() {
+		Object dataKind = getAnyAttributeValue("dataKind");
+		return (dataKind instanceof String && "Variable".equalsIgnoreCase(((String)dataKind).trim()));
+	}
+	
+	public boolean isConstant() {
+		Object dataKind = getAnyAttributeValue("dataKind");
+		return (dataKind instanceof String && "Constant".equalsIgnoreCase(((String)dataKind).trim()));
+	}
+	
+	public boolean isCarrierSet() {
+		Object dataKind = getAnyAttributeValue("dataKind");
+		return (dataKind instanceof String && "Set".equalsIgnoreCase(((String)dataKind).trim()));
+	}
+
 }
