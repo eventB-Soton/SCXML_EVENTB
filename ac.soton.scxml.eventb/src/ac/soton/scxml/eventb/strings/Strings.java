@@ -174,7 +174,7 @@ public class Strings {
 		}
 	}
 
-	private static String convertToRodin(String expr) {
+	public static String convertToRodin(String expr) {
 		String str = RodinKeyboardUIPlugin.getDefault().translate(expr);
 		System.out.println(expr+" -> "+str);
 		return str;
