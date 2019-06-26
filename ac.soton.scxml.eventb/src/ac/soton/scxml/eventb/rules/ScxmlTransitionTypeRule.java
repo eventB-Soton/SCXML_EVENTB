@@ -17,13 +17,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
-import ac.soton.scxml.ScxmlAssignType;
-import ac.soton.scxml.ScxmlInitialType;
-import ac.soton.scxml.ScxmlPackage;
-import ac.soton.scxml.ScxmlRaiseType;
-import ac.soton.scxml.ScxmlScxmlType;
-import ac.soton.scxml.ScxmlStateType;
-import ac.soton.scxml.ScxmlTransitionType;
 import org.eventb.emf.core.machine.Action;
 import org.eventb.emf.core.machine.Event;
 import org.eventb.emf.core.machine.Guard;
@@ -33,10 +26,18 @@ import org.eventb.emf.core.machine.MachinePackage;
 import ac.soton.emf.translator.TranslationDescriptor;
 import ac.soton.emf.translator.configuration.IRule;
 import ac.soton.emf.translator.utils.Find;
+import ac.soton.eventb.emf.core.extension.coreextension.TypedParameter;
 import ac.soton.eventb.statemachines.AbstractNode;
 import ac.soton.eventb.statemachines.Statemachine;
 import ac.soton.eventb.statemachines.StatemachinesPackage;
 import ac.soton.eventb.statemachines.Transition;
+import ac.soton.scxml.ScxmlAssignType;
+import ac.soton.scxml.ScxmlInitialType;
+import ac.soton.scxml.ScxmlPackage;
+import ac.soton.scxml.ScxmlRaiseType;
+import ac.soton.scxml.ScxmlScxmlType;
+import ac.soton.scxml.ScxmlStateType;
+import ac.soton.scxml.ScxmlTransitionType;
 import ac.soton.scxml.eventb.strings.Strings;
 import ac.soton.scxml.eventb.utils.IumlbScxmlAdapter;
 import ac.soton.scxml.eventb.utils.Make;
@@ -163,6 +164,19 @@ public class ScxmlTransitionTypeRule extends AbstractSCXMLImporterRule implement
 					transition.getGuards().add(guard);
 				}
 				
+			}
+			
+			//add any explicit parameters of the scxml transition
+			List<IumlbScxmlAdapter> prms = new IumlbScxmlAdapter(scxmlTransition).getAnyChildren("parameter");
+			for (IumlbScxmlAdapter prm : prms){
+				int rl = prm.getRefinementLevel();
+				if (rl <= ref.level){
+					String name = (String)prm.getAnyAttributeValue("name");
+					String type = (String)prm.getAnyAttributeValue("type");
+					String comment = (String)prm.getAnyAttributeValue("comment");
+					TypedParameter parameter =  (TypedParameter) Make.typedParameter(name,Strings.convertToRodin(type),comment); 
+					transition.getParameters().add(parameter);
+				}
 			}
 			
 			//add any explicit guards of the scxml transition

@@ -33,6 +33,8 @@ import org.eventb.emf.core.machine.Variable;
 import org.eventb.emf.core.machine.Witness;
 
 import ac.soton.emf.translator.TranslationDescriptor;
+import ac.soton.eventb.emf.core.extension.coreextension.CoreextensionFactory;
+import ac.soton.eventb.emf.core.extension.coreextension.TypedParameter;
 import ac.soton.eventb.statemachines.AbstractNode;
 import ac.soton.eventb.statemachines.Final;
 import ac.soton.eventb.statemachines.Initial;
@@ -235,6 +237,14 @@ public class Make {
 		transition.setTarget(target);
 		transition.setComment(comment);
 		return transition;
+	}
+
+	public static TypedParameter typedParameter(String name, String type, String comment) {
+		TypedParameter tp = CoreextensionFactory.eINSTANCE.createTypedParameter();
+		tp.setName(name);
+		tp.setType(type);
+		tp.setComment(comment);
+		return tp;
 	}
 
 
