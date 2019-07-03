@@ -260,14 +260,10 @@ public class ScxmlScxmlTypeRule extends AbstractSCXMLImporterRule implements IRu
 	 */
 	private Context getBasisContext() {
 		Context basis = (Context) Make.context(Strings.basisContextName, "(generated for SCXML)");
-		CarrierSet triggerSet = (CarrierSet) Make.set(Strings.triggerSetName, "all possible triggers");
-		basis.getSets().add(triggerSet);
-		Constant const1 = (Constant) Make.constant(Strings.internalTriggersName, "all possible internal triggers");
-		basis.getConstants().add(const1);
-		Constant const2 = (Constant) Make.constant(Strings.externalTriggersName, "all possible external triggers");
-		basis.getConstants().add(const2);
-		Axiom ax = (Axiom) Make.axiom(Strings.triggerPartitionAxiomName, Strings.triggerPartitionAxiomPredicate, "");
-		basis.getAxioms().add(ax);
+		CarrierSet externalTriggerSet = (CarrierSet) Make.set(Strings.externalTriggersName, "all possible external triggers");
+		basis.getSets().add(externalTriggerSet);
+		CarrierSet internalTriggerSet = (CarrierSet) Make.set(Strings.internalTriggersName, "all possible internal triggers");
+		basis.getSets().add(internalTriggerSet);
 		return basis;
 	}
 	
@@ -291,8 +287,8 @@ public class ScxmlScxmlTypeRule extends AbstractSCXMLImporterRule implements IRu
 		basis.getInvariants().add(i1);
 		Invariant i2 = (Invariant) Make.invariant(Strings.externalQueueTypeName, Strings.externalQueueTypePredicate, "external trigger queue");
 		basis.getInvariants().add(i2);
-		Invariant i3 = (Invariant) Make.invariant(Strings.queueDisjunctionName, Strings.queueDisjunctionPredicate, "queues are disjoint");
-		basis.getInvariants().add(i3);
+		//Invariant i3 = (Invariant) Make.invariant(Strings.queueDisjunctionName, Strings.queueDisjunctionPredicate, "queues are disjoint"); 	//now different types
+		//basis.getInvariants().add(i3);
 		Invariant i4 = (Invariant) Make.invariant(Strings.completionFlagTypeName, Strings.completionFlagTypePredicate, "completion flag");
 		basis.getInvariants().add(i4);
 		
