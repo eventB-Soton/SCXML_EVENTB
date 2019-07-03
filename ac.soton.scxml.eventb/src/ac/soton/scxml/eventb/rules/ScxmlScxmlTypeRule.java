@@ -94,7 +94,9 @@ public class ScxmlScxmlTypeRule extends AbstractSCXMLImporterRule implements IRu
 					e.getActions().clear();
 					//add guards for next level
 					if (Strings.futureExternalTriggersEventName.equals(e.getName())){
-						Guard e1_g1 = (Guard) Make.guard(Strings.e1_g1_Name+i, false, Strings.e1_g1_Predicate+i, Strings.e1_g1_Comment);
+						Guard e1_g1 = (Guard) Make.guard(Strings.e1_g1_Name+i, false, 
+								Strings.generalRaisedExternalTriggerGuardPredicate(i), //Strings.e1_g1_Predicate+i, 
+								Strings.e1_g1_Comment);
 						e.getGuards().add(e1_g1);
 					}
 				}else{

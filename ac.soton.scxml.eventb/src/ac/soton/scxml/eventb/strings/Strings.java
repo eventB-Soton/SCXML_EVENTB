@@ -279,7 +279,10 @@ public class Strings {
 	public static final  String raisedExternalTriggersParameterName = "SCXML_raisedTriggers";
 	public static final  String raisedExternalTriggersParameterComment = "";
 	public static final  String e1_g1_Name = "typeof_"+raisedExternalTriggersParameterName;
-	public static final  String e1_g1_Predicate = raisedExternalTriggersParameterName+" \u2286 "+externalTriggersName;
+	public static final  String e1_g1_Predicate = raisedExternalTriggersParameterName+" \u2286 "+externalTriggersName;  //subset could be empty (used in basis)
+	public static String generalRaisedExternalTriggerGuardPredicate(int i) {						
+		return raisedExternalTriggersParameterName+" \u2208 \u2119\u0031("+externalTriggersName+i+")";							//non-empty subset using POW1 (used in refinements)
+	}
 	public static final  String e1_g1_Comment = "";
 	public static final  String e1_a1_Name = "SCXML_raiseExternalTriggers";
 	public static final  String e1_a1_Action = externalQueueName+" ≔ "+externalQueueName+" \u222a "+raisedExternalTriggersParameterName;
