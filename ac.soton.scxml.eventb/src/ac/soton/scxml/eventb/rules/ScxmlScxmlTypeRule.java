@@ -367,6 +367,7 @@ public class ScxmlScxmlTypeRule extends AbstractSCXMLImporterRule implements IRu
 		basis.getEvents().add(e5);
 		
 		Event e6 = (Event) Make.event(Strings.completionEventName);
+		e6.setComment("<INTERNAL><PRIORITY=9>");		//annotate as internal with low priority for scenario checker
 		Guard e6_g1 = (Guard) Make.guard(Strings.e6_g1_Name, false, Strings.e6_g1_Predicate, Strings.e6_g1_Comment);
 		e6.getGuards().add(e6_g1);
 		Action e6_a1 = (Action) Make.action(Strings.e6_a1_Name, Strings.e6_a1_Action, Strings.e6_a1_Comment);
@@ -376,6 +377,4 @@ public class ScxmlScxmlTypeRule extends AbstractSCXMLImporterRule implements IRu
 		return basis;
 	}
 	
-
-
 }
