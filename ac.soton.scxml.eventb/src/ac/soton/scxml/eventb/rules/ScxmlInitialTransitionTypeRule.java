@@ -180,13 +180,13 @@ public class ScxmlInitialTransitionTypeRule extends AbstractSCXMLImporterRule im
 		return false;
 	}
 
-//	/**
-//	 * fire late to make sure that the parent state has its incoming transitions
-//	 */
-//	@Override
-//	public boolean fireLate(){
-//		return true;
-//	}
+	/**
+	 * fire late to make sure that the parent state has its incoming transitions
+	 */
+	@Override
+	public boolean fireLate(){
+		return true;
+	}
 	
 	@Override
 	public List<TranslationDescriptor> fire(EObject sourceElement, List<TranslationDescriptor> translatedElements) throws Exception {
