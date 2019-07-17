@@ -95,7 +95,14 @@ public class Utils {
 	public static Event getOrCreateEvent(Refinement ref, List<TranslationDescriptor> descriptors, Trigger trigger, Set<ScxmlTransitionType> combi, int depth) {
 		printCombi("getOrCreateEvent",combi, ref);
 		String eventName = getCombiEventName(trigger.getName(), combi);		//PARAMETERS REMOVED... ref.machine, descriptors,
-		Event ev = getOrCreateEvent(ref.machine, false, descriptors,eventName);
+		Event ev = getOrCreateEvent(ref.machine, false, descriptors,eventName); 
+		if ("null".equals(trigger.getName())) {
+			ev.setComment("<INTERNAL><PRIORITY=3>  UNTRIGGERED TRANSITIONS "+ev.getComment());	//annotate transition events as internal for scenario checker 
+		}else if (trigger.isInternal()){
+			ev.setComment("<INTERNAL><PRIORITY=2>  INTERNAL TRIGGERED TRANSITIONS "+ev.getComment());	//annotate transition events as internal for scenario checker 
+		}else {
+			ev.setComment("<INTERNAL><PRIORITY=1>  EXTERNAL TRIGGERED TRANSITIONS "+ev.getComment());	//annotate transition events as internal for scenario checker 
+		}
 		String refinedEventName = getRefinesName(ref, trigger, combi, depth);
 		if (!ev.getRefinesNames().contains(refinedEventName)){
 			ev.getRefinesNames().add(refinedEventName);
