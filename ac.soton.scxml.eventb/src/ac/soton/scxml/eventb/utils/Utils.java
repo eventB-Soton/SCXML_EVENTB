@@ -24,10 +24,14 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.xml.type.AnyType;
+
+import ac.soton.scxml.ScxmlAssignType;
 import ac.soton.scxml.ScxmlDataType;
 import ac.soton.scxml.ScxmlFinalType;
 import ac.soton.scxml.ScxmlInitialType;
 import ac.soton.scxml.ScxmlLogType;
+import ac.soton.scxml.ScxmlRaiseType;
 import ac.soton.scxml.ScxmlScxmlType;
 import ac.soton.scxml.ScxmlStateType;
 import ac.soton.scxml.ScxmlTransitionType;
@@ -122,8 +126,15 @@ public class Utils {
 	}
 	
 	/**
-	 * Returns the starting refinement level for this scxml element
+	 * Returns the starting refinement level for this scxml element.
+	 * The normal policy for refinement level is that it is annotated or if omitted, the same as its parent. 
+	 * (This is the basic behaviour implemented by doGetRefinement Level)
+	 * However, for convenience, some types of elements need a different behaviour. 
+	 * For example, states are annotated with the refinement level that their nested state-machines appear - and they are first used in their parent statemachines refinement.
+	 * Similarly transitions and their content should be used at the refinement level of their parent state.
+	 * 
 	 * The refinement level of a transition is always the same as its parent (recursively).
+	 * The content of a transition is either annotated or the same as its parent transition (recursively).
 	 * The refinement level of a state, final or initial is always the same as its parent's annotated level (non-recursively)...
 	 * The refinement level is  given in a 'refinement' iumlb:attribute attached to the element,
 	 * or, if none, the refinement level of its parent,
@@ -132,18 +143,62 @@ public class Utils {
 	 * @param scxmlElement
 	 * @return
 	 */
-	public static int getRefinementLevel(EObject scxmlElement){
+	public static int getRefinementLevel(Object scxml){
+		EObject scxmlElement;
+		IumlbScxmlAdapter scxmlAdapter;
+		if (scxml instanceof IumlbScxmlAdapter) {
+			scxmlElement = ((IumlbScxmlAdapter) scxml).target;
+			scxmlAdapter = (IumlbScxmlAdapter) scxml;
+		}else {
+			scxmlElement = (EObject) scxml;
+			scxmlAdapter = new IumlbScxmlAdapter(scxmlElement);
+		}
 		if (scxmlElement instanceof ScxmlTransitionType) {
+			//use these rules but start from the containing state
 			return getRefinementLevel(scxmlElement.eContainer());
+		}else if (
+				scxmlElement instanceof ScxmlRaiseType ||
+				scxmlElement instanceof ScxmlAssignType ||
+				scxmlElement instanceof AnyType && (
+					"parameter".equals(scxmlAdapter.featureName) ||
+					"guard".equals(scxmlAdapter.featureName)
+					)
+				) {
+			if (scxmlAdapter.getBasicRefinementLevel()<0) {
+				return getRefinementLevel(scxmlElement.eContainer());
+			}
 		}else if (
 				scxmlElement instanceof ScxmlStateType || 
 				scxmlElement instanceof ScxmlFinalType ||
 				scxmlElement instanceof ScxmlInitialType){
-			return new IumlbScxmlAdapter(scxmlElement.eContainer()).getRefinementLevel();
-		}else{
-			return new IumlbScxmlAdapter(scxmlElement).getRefinementLevel();
+			//use the basic rules for getting refinement level but starting from the states parent
+			return Utils.doGetRefinementLevel(scxmlElement.eContainer());
 		}
+		//default - use the basic rules for getting refinement level
+		return Utils.doGetRefinementLevel(scxmlElement);
 	}
+	
+	/**
+	 * Returns the starting semantic refinement level for this SCXML element
+	 * This is given by the 'refinement' iumlb:attribute attached to the element,
+	 * or, if none, the refinement level of its parent,
+	 * or, if none, 0
+	 * 
+	 * @param scxmlElement
+	 * @return
+	 */
+	private static int doGetRefinementLevel(EObject scxmlElement){
+		int refinementLevel = new IumlbScxmlAdapter(scxmlElement).getBasicRefinementLevel();
+		if (refinementLevel < 0) {
+			if (scxmlElement.eContainer()==null){
+				refinementLevel=0;
+			}else{ 
+				refinementLevel= doGetRefinementLevel(scxmlElement.eContainer());
+			}
+		}
+		return refinementLevel;
+	}
+
 	
 	/**
 	 * refine - this makes a new element that refines the abstract one

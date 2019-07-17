@@ -149,7 +149,7 @@ public class ScxmlTransitionTypeRule extends AbstractSCXMLImporterRule implement
 				String raiseList = "";
 				// set parameter value for raised triggers
 				for (ScxmlRaiseType raise : scxmlTransition.getRaise()){
-					if(new IumlbScxmlAdapter(raise).getRefinementLevel() <= ref.level){
+					if(Utils.getRefinementLevel(raise) <= ref.level){
 						raiseList = raiseList.length()==0? raise.getEvent() : ","+raise.getEvent();
 					}
 				}	
@@ -169,7 +169,7 @@ public class ScxmlTransitionTypeRule extends AbstractSCXMLImporterRule implement
 			//add any explicit parameters of the scxml transition
 			List<IumlbScxmlAdapter> prms = new IumlbScxmlAdapter(scxmlTransition).getAnyChildren("parameter");
 			for (IumlbScxmlAdapter prm : prms){
-				int rl = prm.getRefinementLevel();
+				int rl = Utils.getRefinementLevel(prm);
 				if (rl <= ref.level){
 					String name = (String)prm.getAnyAttributeValue("name");
 					String type = (String)prm.getAnyAttributeValue("type");
@@ -182,7 +182,7 @@ public class ScxmlTransitionTypeRule extends AbstractSCXMLImporterRule implement
 			//add any explicit guards of the scxml transition
 			List<IumlbScxmlAdapter> gds = new IumlbScxmlAdapter(scxmlTransition).getGuards();
 			for (IumlbScxmlAdapter gd : gds){
-				int rl = gd.getRefinementLevel();
+				int rl = Utils.getRefinementLevel(gd);
 				if (rl <= ref.level){
 					String name = (String)gd.getAnyAttributeValue("name");
 					String derived = (String)gd.getAnyAttributeValue("derived");
@@ -196,7 +196,7 @@ public class ScxmlTransitionTypeRule extends AbstractSCXMLImporterRule implement
 			//add any explicit actions of the scxml transition (assigns in SCXML)
 			int i=0;
 			for (ScxmlAssignType assign : scxmlTransition.getAssign()){
-				if(new IumlbScxmlAdapter(assign).getRefinementLevel() <= ref.level){
+				if(Utils.getRefinementLevel(assign) <= ref.level){
 					Action action = (Action) Make.action(transition.getLabel()+"_act_"+i, Strings.ASSIGN_ACTION(assign), "SCXML transition assign");
 					transition.getActions().add(action);
 					i++;

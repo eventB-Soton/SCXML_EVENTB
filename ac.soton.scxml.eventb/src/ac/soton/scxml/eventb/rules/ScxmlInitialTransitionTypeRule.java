@@ -213,7 +213,7 @@ public class ScxmlInitialTransitionTypeRule extends AbstractSCXMLImporterRule im
 			String raiseList = "";
 			// set parameter value for raised triggers
 			for (ScxmlRaiseType raise : scxmlTransition.getRaise()){
-				if(new IumlbScxmlAdapter(raise).getRefinementLevel() <= ref.level){
+				if(Utils.getRefinementLevel(raise) <= ref.level){
 					raiseList = raiseList.length()==0? raise.getEvent() : ","+raise.getEvent();
 				}
 			}	
@@ -231,7 +231,7 @@ public class ScxmlInitialTransitionTypeRule extends AbstractSCXMLImporterRule im
 			//add any explicit guards of the scxml transition
 			List<IumlbScxmlAdapter> gds = new IumlbScxmlAdapter(scxmlTransition).getGuards();
 			for (IumlbScxmlAdapter gd : gds){
-				int rl = gd.getRefinementLevel();
+				int rl = Utils.getRefinementLevel(gd);
 				if (rl <= ref.level){
 					String name = (String)gd.getAnyAttributeValue("name");
 					String derived = (String)gd.getAnyAttributeValue("derived");
@@ -245,7 +245,7 @@ public class ScxmlInitialTransitionTypeRule extends AbstractSCXMLImporterRule im
 			//add any explicit actions of the scxml transition (assigns in SCXML)
 			int i=0;
 			for (ScxmlAssignType assign : scxmlTransition.getAssign()){
-				if(new IumlbScxmlAdapter(assign).getRefinementLevel() <= ref.level){
+				if(Utils.getRefinementLevel(assign) <= ref.level){
 					Action action = (Action) Make.action(transition.getLabel()+"_act_"+i, Strings.ASSIGN_ACTION(assign), "SCXML transition assign");
 					transition.getActions().add(action);
 					i++;
