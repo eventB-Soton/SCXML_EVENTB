@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 University of Southampton.
+ *  Copyright (c) 2016-2019 University of Southampton.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -92,17 +92,18 @@ public class ScxmlDataTypeRule extends AbstractSCXMLImporterRule implements IRul
 	public List<TranslationDescriptor> fire(EObject sourceElement, List<TranslationDescriptor> generatedElements) throws Exception {
 		ScxmlDataType scxml = (ScxmlDataType)sourceElement;
 		String vname = Strings.LOCATION(scxml);
-		boolean done = false; //flag used to ensure we only create type invariants once
+		boolean done = false; //flag used to ensure we only create type invariants and initialisation once
 		for (RefinementLevelDescriptor ref : refinements){
 			Variable variable =  (Variable) Make.variable(vname, "");
 			ref.machine.getVariables().add(variable);
 			if (done == false){
 				Invariant invariant =  (Invariant) Make.invariant(vname+"_type", Utils.getType(scxml), "");
 				ref.machine.getInvariants().add(invariant);
+				//Also only need to do intialisation once because of extension
+				Action initAction =  (Action) Make.action(vname+"_init", Strings.INIT_ACTION(scxml), "");
+				ref.initialisation.getActions().add(initAction);
 				done=true;
-			}
-			Action initAction =  (Action) Make.action(vname+"_init", Strings.INIT_ACTION(scxml), "");
-			ref.initialisation.getActions().add(initAction);		
+			}		
 		}
 		return Collections.emptyList();
 	}
