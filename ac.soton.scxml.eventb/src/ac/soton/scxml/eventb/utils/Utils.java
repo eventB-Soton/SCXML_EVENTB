@@ -321,10 +321,8 @@ public class Utils {
 		}else{
 			if ("null".equals(trigger.getName())){
 					refinedEventName = Strings.untriggeredEventName;
-			}else if(trigger.isInternal()){ 	//raisedTriggers.containsKey(triggerName)){
-				refinedEventName = Strings.consumeInternalTriggerEventName;
 			}else{
-				refinedEventName = Strings.consumeExternalTriggerEventName;								
+				refinedEventName = Strings.consumeTriggerEventName;								
 			}
 		}
 		return refinedEventName;
