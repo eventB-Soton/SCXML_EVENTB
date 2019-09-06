@@ -111,9 +111,10 @@ public class ScxmlTransitionTypeRule extends AbstractSCXMLImporterRule implement
 		@SuppressWarnings("unchecked")
 		Map<String, Trigger> triggerStore = (Map<String, Trigger>) storage.fetch("triggers");
 		ScxmlTransitionType scxmlTransition = ((ScxmlTransitionType) sourceElement);
-
-		//TODO: calculate finalised
-		boolean finalised = false;		// if true => no more refinements
+		IumlbScxmlAdapter adaptedScxmlTransition = new IumlbScxmlAdapter(scxmlTransition);
+		
+		//TODO: calculate finalised - isFinalised has not been tried
+		boolean finalised = adaptedScxmlTransition.isFinalised(); //false;		// if true => no more refinements
 		
 		for (Refinement ref : refinements){
 			
