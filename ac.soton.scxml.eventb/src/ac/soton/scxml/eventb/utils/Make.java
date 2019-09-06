@@ -91,7 +91,11 @@ public class Make {
 	}
 
 	public static Object event(String name) {
-		return event(name, false, Convergence.ORDINARY, Collections.<String> emptyList(), "");
+		return event(name, "");
+	}
+	
+	public static Object event(String name, String comment) {
+		return event(name, false, Convergence.ORDINARY, Collections.<String> emptyList(), comment);
 	}
 		
 	public static Object event(String name, boolean extended, Convergence convergence, List<String> refinesNames, String comment) {
