@@ -203,7 +203,7 @@ public class Strings {
 		return "(generated from SCXML file: "+fileName+")";
 	}
 	
-	public static final  String basisContextName = "basis";	
+	public static final  String basisContextName = "basis_ctx";	
 	public static final  String triggerSetName = "SCXML_TRIGGER";
 	public static final  String externalTriggersName = "SCXML_FutureExternalTrigger";
 	public static final  String internalTriggersName = "SCXML_FutureInternalTrigger";
