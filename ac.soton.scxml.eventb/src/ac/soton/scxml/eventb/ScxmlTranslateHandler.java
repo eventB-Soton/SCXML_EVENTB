@@ -10,27 +10,16 @@
  *******************************************************************************/
 package ac.soton.scxml.eventb;
 
-import java.util.List;
+import java.util.Collections;
 
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.workspace.util.WorkspaceSynchronizer;
-import org.eventb.core.IEventBRoot;
-import org.eventb.emf.core.EventBElement;
 import org.eventb.emf.core.EventBNamedCommentedComponentElement;
-import org.eventb.emf.persistence.EMFRodinDB;
-import org.eventb.emf.persistence.SaveResourcesCommand;
-import org.rodinp.core.IRodinProject;
-import org.rodinp.core.RodinCore;
 
 import ac.soton.emf.translator.eventb.handler.EventBTranslateHandler;
 import ac.soton.eventb.emf.diagrams.generator.commands.TranslateAllCommand;
@@ -63,12 +52,24 @@ public class ScxmlTranslateHandler extends EventBTranslateHandler {
 	protected IStatus postProcessing(EObject sourceElement, String commandId, IProgressMonitor monitor) throws Exception {
 		IStatus status = Status.OK_STATUS;
 		if (sourceElement instanceof DocumentRoot){
+			save(monitor);	//save the resources including the new machines/contexts generated from scxml (this is necessary for the UML-B translations below to work properly)
+			
 			//IProject project = WorkspaceSynchronizer.getFile(sourceElement.eResource()).getProject();
 			//EMFRodinDB emfRodinDB = new EMFRodinDB(getEditingDomain());
+			
 			for (Resource r : getEditingDomain().getResourceSet().getResources()) {
+				//reload the resources that were saved above (this is necessary for the UML-B translations below to work properly)
+				r.unload();
+				r.load(Collections.EMPTY_MAP);
+				
 				EObject eo = r.getContents().get(0);
 				if (eo instanceof EventBNamedCommentedComponentElement) {
 					EventBNamedCommentedComponentElement component = (EventBNamedCommentedComponentElement)eo;
+					
+//		//tried approach of saving between each generate but it does not work any better - save and reload above works better
+//					generateDiagrams(component, monitor);
+//					save(monitor);
+					
 					//translate all diagrams
 					TranslateAllCommand translateAllCmd = new TranslateAllCommand(getEditingDomain(),component);
 					if (translateAllCmd.canExecute()){
@@ -84,10 +85,13 @@ public class ScxmlTranslateHandler extends EventBTranslateHandler {
 								statusMessage = statusMessage+"\n"+childStatus.getMessage();
 							}
 							Activator.logError("Failed to generated elements: "+statusMessage);
+						}else {
+							save(monitor);
 						}
 						
 					}else{
-						status = Status.CANCEL_STATUS;
+						// ignore - probably no diagram in that resource
+						//status = Status.CANCEL_STATUS;
 					}
 				}
 			}
@@ -102,6 +106,39 @@ public class ScxmlTranslateHandler extends EventBTranslateHandler {
 	}
 	
 	
+	
+//	/**
+//	 * Generate all diagrams in a component
+//	 * This must be done in a RodinCore runnable
+//	 * 
+//	 * @param monitor
+//	 * @throws ExecutionException 
+//	 */
+//	protected void generateDiagrams(EventBNamedCommentedComponentElement component, IProgressMonitor monitor) {
+//		// save all resources that have been modified	
+//		final TranslateAllCommand translateAllCmd = new TranslateAllCommand(getEditingDomain(), component);
+//		if (translateAllCmd.canExecute()){
+//			try {
+//				RodinCore.run(new IWorkspaceRunnable() {
+//					public void run(final IProgressMonitor monitor) throws CoreException {
+//						try {
+//							translateAllCmd.execute(monitor, null);
+//						} catch (ExecutionException e) {
+//							Activator.logError("Failed to translate diagrams to Event-B: "+e.getMessage());
+//							e.printStackTrace();
+//						}
+//					}
+//				}, getEventBRoot(component).getRodinProject().getSchedulingRule()
+//				, monitor);
+//			} catch (RodinDBException e) {
+//				Activator.logError("Failed to translate diagrams to Event-B: "+e.getMessage());				
+//				e.printStackTrace();
+//			}
+//		}
+//		monitor.done();
+//	}
+//	
+//	
 //	private static final String QUALIFIER = "ac.soton.scxml.eventb";
 //	private static final QualifiedName COMPONENT_ROOT = new QualifiedName(QUALIFIER, "COMPONENT_ROOT");
 //	
