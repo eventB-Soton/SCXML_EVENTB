@@ -237,7 +237,7 @@ public class ScxmlInitialTransitionTypeRule extends AbstractSCXMLImporterRule im
 					String derived = (String)gd.getAnyAttributeValue("derived");
 					String predicate = (String)gd.getAnyAttributeValue("predicate");
 					String comment = (String)gd.getAnyAttributeValue("comment");
-					Guard guard =  (Guard) Make.guard(name,Boolean.parseBoolean(derived),Strings.INV_PREDICATE(predicate),comment); 
+					Guard guard =  (Guard) Make.guard(name,Boolean.parseBoolean(derived),Strings.PREDICATE(predicate),comment); 
 					transition.getGuards().add(guard);
 				}
 			}
