@@ -141,15 +141,25 @@ public class Strings {
 								cond)))));
 	}
 	
-	public static String INV_PREDICATE(String anticedent, ScxmlDataType scxml) {
-		String predicate = INV_PREDICATE(scxml.getExpr());
-		if (anticedent != null){
-			predicate = anticedent + "("+ predicate+ ")";
-		}
-		return predicate;
+	public static String SCXMLSTATE_INV_PREDICATE;
+	public static String SCXMLSTATE_INV_PREDICATE(String raw_predicate) {
+		return  isComplete_guardPredicate+									//untriggered completion flag is TRUE
+//				" \u2227 " + hasNoDequeuedTriggers_guardPredicate+ 			//no dequeued triggers (not needed - this is implied by the completion flag being TRUE)
+				" \u2227 " + internalQueueName+" = \u2205" + 				//internal Q is empty
+				" \u21d2 ("+ PREDICATE(raw_predicate) + ")" ;
+		
+		//return bind(SCXMLSTATE_INV_PREDICATE,dequeuedTriggerSetName,completionFlagName,PREDICATE(raw_predicate));
+		
+//		String predicate = PREDICATE(raw_predicate);
+//		String anticedent = 
+//		if (anticedent != null){
+//			predicate = anticedent + "("+ predicate+ ")";
+//		}
+//		return predicate;
 	}
 	
-	public static String INV_PREDICATE(String predicate) {
+
+	public static String PREDICATE(String predicate) {
 		String pred = convertLocation(
 				convertBoolVals(
 				convertDoubleEquals(
