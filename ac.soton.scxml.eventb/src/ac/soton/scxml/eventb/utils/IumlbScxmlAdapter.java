@@ -154,8 +154,17 @@ public class IumlbScxmlAdapter {
 		return (dataKind instanceof String && "CarrierSet".equalsIgnoreCase(((String)dataKind).trim()));
 	}
 
-	public boolean isFinalised() {
+	public Integer getFinalised() {
 		Object finalised = getAnyAttributeValue("finalised");
-		return (finalised instanceof Boolean &&  (Boolean)finalised); 
+		if (finalised instanceof String) {
+			try {
+				return Integer.parseInt((String)finalised);
+			}catch (Exception e){
+				return -1;
+			}
+		}else{
+			return -1;
+		}
 	}
+	
 }
