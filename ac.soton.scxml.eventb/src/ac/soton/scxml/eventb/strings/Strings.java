@@ -424,9 +424,16 @@ public class Strings {
 	public static final  String e3_g1_Name = "typeof_"+consumedTriggerParameterName;
 	public static final  String e3_g1_Predicate = consumedTriggerParameterName+" ∈ "+dequeuedTriggerSetName; //externalQueueName;
 	public static final  String e3_g1_Comment = "";
+	public static final  String e3_g2_Name = "SCXML_triggersInThisRefinement_"; //append refinement level to make unique
+	//public static final  String e3_g2_Predicate = ;
+	public static String e3_g2_Predicate(String triggerList) {
+		return (consumedTriggerParameterName+"\u2209 {"+triggerList+"}");
+	}
+	public static final  String e3_g2_Comment = "future transitions may not be triggered by already defined triggers";	
+	
 //	public static final  String e3_g2_Name = "SCXML_internalQEmpty";
 //	public static final  String e3_g2_Predicate = internalQueueName+" = \u2205";
-	public static final  String e3_g2_Comment = "";
+//	public static final  String e3_g2_Comment = "";
 //	public static final  String e3_g3_Name = "SCXML_isComplete";
 //	public static final  String e3_g3_Predicate = completionFlagName+" = TRUE";
 //	public static final  String e3_g3_Comment = "";
