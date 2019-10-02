@@ -99,12 +99,21 @@ public class ScxmlScxmlTypeRule extends AbstractSCXMLImporterRule implements IRu
 								Strings.generalRaisedExternalTriggerGuardPredicate(i), //Strings.e1_g1_Predicate+i, 
 								Strings.e1_g1_Comment);
 						e.getGuards().add(e1_g1);
+					//prevent future triggered transitions from triggering on triggers that are now defined	
+					}else if (Strings.consumeTriggerEventName.equals(e.getName())) {
+						String newTriggers = getTriggersForRefinement(triggers, i);
+						if (newTriggers!=null) {
+							Guard e3_g2 = (Guard) Make.guard(Strings.e3_g2_Name+i,  false,
+									Strings.e3_g2_Predicate(newTriggers), 
+									Strings.e3_g2_Comment);
+							e.getGuards().add(e3_g2);
+						}
 					}
 				}else{
 					System.out.println("Non refined event: "+e.getName());
 				}
 			}
-			
+
 			//create the descriptor to put the machine in the project
 			ret.add(Make.descriptor(project, components, machine ,1));
 			// make a new context by refining the previous level
@@ -185,6 +194,24 @@ public class ScxmlScxmlTypeRule extends AbstractSCXMLImporterRule implements IRu
 				context.getAxioms().add(prob_setup);
 			}
 				
+		}
+		return ret;
+	}
+
+	/**
+	 * returns a comma separated list of triggers raised at refinement level i
+	 * @param triggers
+	 * @param i
+	 * @return
+	 */
+	private String getTriggersForRefinement(Map<String, Trigger> triggers, int i) {
+		String ret = null;
+		for (String tname : triggers.keySet()){
+			if (tname == "null") continue;
+			Trigger t = triggers.get(tname);
+			if (t.getRefinementLevel()==i){
+				ret = ret==null? tname : ret+","+tname;
+			}
 		}
 		return ret;
 	}
