@@ -25,16 +25,6 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xml.type.AnyType;
-
-import ac.soton.scxml.ScxmlAssignType;
-import ac.soton.scxml.ScxmlDataType;
-import ac.soton.scxml.ScxmlFinalType;
-import ac.soton.scxml.ScxmlInitialType;
-import ac.soton.scxml.ScxmlLogType;
-import ac.soton.scxml.ScxmlRaiseType;
-import ac.soton.scxml.ScxmlScxmlType;
-import ac.soton.scxml.ScxmlStateType;
-import ac.soton.scxml.ScxmlTransitionType;
 import org.eventb.emf.core.EventBElement;
 import org.eventb.emf.core.EventBNamed;
 import org.eventb.emf.core.Project;
@@ -48,6 +38,15 @@ import ac.soton.emf.translator.TranslationDescriptor;
 import ac.soton.emf.translator.utils.Find;
 import ac.soton.eventb.emf.core.extension.navigator.refiner.AbstractElementRefiner;
 import ac.soton.eventb.emf.core.extension.navigator.refiner.ElementRefinerRegistry;
+import ac.soton.scxml.ScxmlAssignType;
+import ac.soton.scxml.ScxmlDataType;
+import ac.soton.scxml.ScxmlFinalType;
+import ac.soton.scxml.ScxmlInitialType;
+import ac.soton.scxml.ScxmlLogType;
+import ac.soton.scxml.ScxmlRaiseType;
+import ac.soton.scxml.ScxmlScxmlType;
+import ac.soton.scxml.ScxmlStateType;
+import ac.soton.scxml.ScxmlTransitionType;
 import ac.soton.scxml.eventb.rules.Trigger;
 import ac.soton.scxml.eventb.strings.Strings;
 
@@ -296,7 +295,7 @@ public class Utils {
 	 * @param name
 	 * @return
 	 */
-		private static EventBNamed findNamedElement(EList<? extends EventBNamed> collection, String name){
+		public static EventBNamed findNamedElement(EList<? extends EventBNamed> collection, String name){
 			for (EventBNamed element : collection){
 				if (name.equals(element.getName())) return element;
 			}
