@@ -486,5 +486,11 @@ public class Strings {
 //	public static final  String e6_a2_Name = "SCXML_clearDequeuedTriggers";
 //	public static final  String e6_a2_Action = dequeuedTriggerSetName+" \u2254 \u2205";
 //	public static final  String e6_a2_Comment = "";
+
+	//this is the name of the guard that is added to completion events and other combinations to force a finalised transition to complete.
+	public static String CompletionGuardName(String label) {
+		return "completeFinalisedTranstion_"+label;
+	}
+
 	
 }
