@@ -129,9 +129,10 @@ public class ScxmlScxmlTypeRule extends AbstractSCXMLImporterRule implements IRu
 				if (refLevel==i){
 					String name = (String)inv.getAnyAttributeValue("name");
 					String derived = (String)inv.getAnyAttributeValue("derived");
+					String trigger = (String)inv.getAnyAttributeValue("trigger");
 					String predicate = (String)inv.getAnyAttributeValue("predicate");
 					String comment = (String)inv.getAnyAttributeValue("comment");
-					Invariant invariant =  (Invariant) Make.invariant(name,Boolean.parseBoolean(derived),Strings.SCXMLSTATE_INV_PREDICATE(predicate),comment); 
+					Invariant invariant =  (Invariant) Make.invariant(name,Boolean.parseBoolean(derived),Strings.SCXMLSTATE_INV_PREDICATE(trigger, predicate),comment); 
 					machine.getInvariants().add(invariant);
 				}
 			}
