@@ -103,9 +103,10 @@ public class ScxmlStateType2StateRule extends AbstractSCXMLImporterRule implemen
 				if (refLevel==ref.level){
 					String name = (String)inv.getAnyAttributeValue("name");
 					String derived = (String)inv.getAnyAttributeValue("derived");
+					String trigger = (String)inv.getAnyAttributeValue("trigger");
 					String predicate = (String)inv.getAnyAttributeValue("predicate");
 					String comment = (String)inv.getAnyAttributeValue("comment");
-					Invariant invariant =  (Invariant) Make.invariant(name,Boolean.parseBoolean(derived),Strings.SCXMLSTATE_INV_PREDICATE(predicate),comment); 
+					Invariant invariant =  (Invariant) Make.invariant(name,Boolean.parseBoolean(derived), Strings.SCXMLSTATE_INV_PREDICATE(trigger, predicate),comment); 
 					state.getInvariants().add(invariant);
 				}
 			}
