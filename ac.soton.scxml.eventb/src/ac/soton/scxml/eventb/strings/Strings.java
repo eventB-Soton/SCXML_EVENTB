@@ -272,7 +272,8 @@ public class Strings {
 	public static final  String completionFlagTypePredicate = completionFlagName+" \u2208 BOOL";
 	public static final  String dequeuedTriggerSetTypeName = "typeof_"+dequeuedTriggerSetName;
 	public static final  String dequeuedTriggerSetTypePredicate = dequeuedTriggerSetName+" \u2286 "+triggerSetName;
-	
+	public static final  String oneDequeuedTriggerInvariantName = "oneDequeuedTrigger";
+	public static final  String oneDequeuedTriggerInvariantPredicate = dequeuedTriggerSetName+"\u2260\u2205 \u21d2(\u2203t\u00b7"+dequeuedTriggerSetName+"={t})";
 	
 	//general guards and actions used in many events
 	

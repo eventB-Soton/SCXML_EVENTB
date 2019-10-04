@@ -330,6 +330,8 @@ public class ScxmlScxmlTypeRule extends AbstractSCXMLImporterRule implements IRu
 		basis.getInvariants().add(i4);
 		Invariant i5 = (Invariant) Make.invariant(Strings.dequeuedTriggerSetTypeName, Strings.dequeuedTriggerSetTypePredicate, "dequeued triggers");
 		basis.getInvariants().add(i5);
+		Invariant i6 = (Invariant) Make.invariant(Strings.oneDequeuedTriggerInvariantName, Strings.oneDequeuedTriggerInvariantPredicate, "at most one dequeued trigger");
+		basis.getInvariants().add(i6);
 		
 		Event initialisation = (Event) Make.event("INITIALISATION");
 		basis.getEvents().add(initialisation);
