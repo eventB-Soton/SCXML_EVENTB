@@ -305,11 +305,9 @@ public class ScxmlScxmlTypeRule extends AbstractSCXMLImporterRule implements IRu
 	/**
 	 * @return
 	 */
-	//TODO: add triggers raised ???
 	private Machine getBasisMachine(Context basisContext) {
 		Machine basis = (Machine) Make.machine(Strings.basisMachineName, "(generated for SCXML)");
 		basis.getSeesNames().add(Strings.basisContextName);
-		//basis.getSees().add(basisContext);
 		
 		Variable v1 = (Variable) Make.variable(Strings.internalQueueName, "internal trigger queue");
 		basis.getVariables().add(v1);
@@ -402,16 +400,10 @@ public class ScxmlScxmlTypeRule extends AbstractSCXMLImporterRule implements IRu
 		e3.getParameters().add(p3_2);
 		Guard e3_g1 = (Guard) Make.guard(Strings.e3_g1_Name, false, Strings.e3_g1_Predicate, Strings.e3_g1_Comment);
 		e3.getGuards().add(e3_g1);
-//		Guard e3_g2 = (Guard) Make.guard(Strings.e3_g2_Name, false, Strings.e3_g2_Predicate, Strings.e3_g2_Comment);
-//		e3.getGuards().add(e3_g2);
 		Guard e3_g3 = (Guard) Make.guard(Strings.isNotComplete_guardName, false, Strings.isNotComplete_guardPredicate, Strings.isNotComplete_guardComment);
 		e3.getGuards().add(e3_g3);
 		Guard e3_g4 = (Guard) Make.guard(Strings.raisedInternalTriggersGuardName, false, Strings.raisedInternalTriggersGuardPredicate, Strings.raisedInternalTriggersGuardComment);
 		e3.getGuards().add(e3_g4);
-//		Action e3_a1 = (Action) Make.action(Strings.setNotComplete_actionName, Strings.setNotComplete_actionExpression, Strings.setNotComplete_actionComment);
-//		e3.getActions().add(e3_a1);
-//		Action e3_a2 = (Action) Make.action(Strings.e3_a2_Name, Strings.e3_a2_Action, Strings.e3_a2_Comment);
-//		e3.getActions().add(e3_a2);
 		Action e3_a1 = (Action) Make.action(Strings.clearDequeuedTriggers_actionName, Strings.clearDequeuedTriggers_actionExpression, Strings.clearDequeuedTriggers_actionComment);
 		e3.getActions().add(e3_a1);
 		Action e3_a3 = (Action) Make.action(Strings.raisedInternalTriggersActionName, Strings.raisedInternalTriggersActionAction, Strings.raisedInternalTriggersActionComment);
@@ -438,8 +430,6 @@ public class ScxmlScxmlTypeRule extends AbstractSCXMLImporterRule implements IRu
 		e5.getGuards().add(e5_g2);
 		Guard e5_g3 = (Guard) Make.guard(Strings.raisedInternalTriggersGuardName, false, Strings.raisedInternalTriggersGuardPredicate, Strings.raisedInternalTriggersGuardComment);
 		e5.getGuards().add(e5_g3);
-//		Action e5_a1 = (Action) Make.action(Strings.setNotComplete_actionName, Strings.setNotComplete_actionExpression, Strings.setNotComplete_actionComment);
-//		e5.getActions().add(e5_a1);
 		Action e5_a2 = (Action) Make.action(Strings.raisedInternalTriggersActionName, Strings.raisedInternalTriggersActionAction, Strings.raisedInternalTriggersActionComment);
 		e5.getActions().add(e5_a2);
 		basis.getEvents().add(e5);
