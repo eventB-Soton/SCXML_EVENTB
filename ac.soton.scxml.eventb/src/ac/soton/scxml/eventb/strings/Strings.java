@@ -241,8 +241,6 @@ public class Strings {
 		}
 	}
 	
-
-	
 	public static String probSetupTriggersAxiomName(int i) {
 		return "ProBSetup_"+triggerSetName+i;
 	}
@@ -304,12 +302,8 @@ public class Strings {
 	public static final  String initExternalQAction = externalQueueName+" \u2254 \u2205";	
 	public static final  String initInternalQName = "init_"+internalQueueName;
 	public static final  String initInternalQAction = internalQueueName+" \u2254 \u2205";
-//	public static final  String initCompletionFlagName = "init_"+completionFlagName;
-//	public static final  String initCompletionFlagAction = completionFlagName+" \u2254 FALSE";
 	public static final  String initDequeuedTriggerSetName = "init_"+dequeuedTriggerSetName;
 	public static final  String initDequeuedTriggerSetAction = dequeuedTriggerSetName+" \u2254 \u2205";
-	
-
 	
 	//e1
 	public static final  String futureExternalTriggersEventName = "SCXML_futureRaiseExternalTrigger";
@@ -343,21 +337,12 @@ public class Strings {
 	public static final  String e2i_g1_Name = "typeof_"+dequeuedInternalTriggerParameterName;
 	public static final  String e2i_g1_Predicate = dequeuedInternalTriggerParameterName+"  ∈ "+internalQueueName;
 	public static final  String e2i_g1_Comment = "";
-//	public static final  String e2i_g2_Name = "SCXML_noDequeuedTriggers";
-//	public static final  String e2i_g2_Predicate = dequeuedTriggerSetName+" = \u2205";
-//	public static final  String e2i_g2_Comment = "";
-//	public static final  String e2i_g3_Name = "SCXML_isComplete";
-//	public static final  String e2i_g3_Predicate = completionFlagName+" = TRUE";
-//	public static final  String e2i_g3_Comment = "";
 	public static final  String e2i_a1_Name = "SCXML_storeDequeuedTrigger";
 	public static final  String e2i_a1_Action = dequeuedTriggerSetName+" \u2254 {"+dequeuedInternalTriggerParameterName+"}";
 	public static final  String e2i_a1_Comment = "";
 	public static final  String e2i_a2_Name = "SCXML_consumeDequeuedTrigger";
 	public static final  String e2i_a2_Action = internalQueueName+" \u2254 "+internalQueueName+" \u2216 {"+dequeuedInternalTriggerParameterName+"}";
 	public static final  String e2i_a2_Comment = "";
-//	public static final  String e2i_a3_Name = "SCXML_NotComplete";
-//	public static final  String e2i_a3_Action = completionFlagName+" \u2254 FALSE";
-//	public static final  String e2i_a3_Comment = "";
 	
 	//e2e
 	public static final  String dequeueExternalTriggerEventName = "SCXML_dequeueExternalTrigger";
@@ -367,12 +352,6 @@ public class Strings {
 	public static final  String e2e_g1_Name = "typeof_"+dequeuedExternalTriggerParameterName;
 	public static final  String e2e_g1_Predicate = dequeuedExternalTriggerParameterName+"  ∈ "+externalQueueName;
 	public static final  String e2e_g1_Comment = "";
-//	public static final  String e2e_g2_Name = "SCXML_noDequeuedTriggers";
-//	public static final  String e2e_g2_Predicate = dequeuedTriggerSetName+" = \u2205";
-//	public static final  String e2e_g2_Comment = "";
-//	public static final  String e2e_g3_Name = "SCXML_isComplete";
-//	public static final  String e2e_g3_Predicate = completionFlagName+" = TRUE";
-//	public static final  String e2e_g3_Comment = "";
 	public static final  String e2e_g4_Name = "SCXML_internalQEmpty";
 	public static final  String e2e_g4_Predicate = internalQueueName+" = \u2205";
 	public static final  String e2e_g4_Comment = "";
@@ -382,13 +361,8 @@ public class Strings {
 	public static final  String e2e_a2_Name = "SCXML_consumeDequeuedTrigger";
 	public static final  String e2e_a2_Action = externalQueueName+" \u2254 "+externalQueueName+" \u2216 {"+dequeuedExternalTriggerParameterName+"}";
 	public static final  String e2e_a2_Comment = "";
-//	public static final  String e2e_a3_Name = "SCXML_NotComplete";
-//	public static final  String e2e_a3_Action = completionFlagName+" \u2254 FALSE";
-//	public static final  String e2e_a3_Comment = "";
-	
 	
 	//Strings
-	//public static final  String futureInternalTriggersEventName = "SCXML_futureInternalTrigger";	
 	public static final  String raisedInternalTriggersParameterName = "SCXML_raisedTriggers";
 	public static final  String raisedInternalTriggersParameterComment = "";
 	public static final  String raisedInternalTriggersGuardName = "typeof_"+raisedInternalTriggersParameterName;
@@ -423,42 +397,15 @@ public class Strings {
 	public static final  String e3_g1_Predicate = consumedTriggerParameterName+" ∈ "+dequeuedTriggerSetName; //externalQueueName;
 	public static final  String e3_g1_Comment = "";
 	public static final  String e3_g2_Name = "SCXML_triggersInThisRefinement_"; //append refinement level to make unique
-	//public static final  String e3_g2_Predicate = ;
 	public static String e3_g2_Predicate(String triggerList) {
 		return (consumedTriggerParameterName+"\u2209 {"+triggerList+"}");
 	}
 	public static final  String e3_g2_Comment = "future transitions may not be triggered by already defined triggers";	
-	
-//	public static final  String e3_g2_Name = "SCXML_internalQEmpty";
-//	public static final  String e3_g2_Predicate = internalQueueName+" = \u2205";
-//	public static final  String e3_g2_Comment = "";
-//	public static final  String e3_g3_Name = "SCXML_isComplete";
-//	public static final  String e3_g3_Predicate = completionFlagName+" = TRUE";
-//	public static final  String e3_g3_Comment = "";
-//	public static final  String e3_a1_Name = "SCXML_notComplete";
-//	public static final  String e3_a1_Action = completionFlagName+" \u2254 FALSE";
-//	public static final  String e3_a1_Comment = "";
-//	public static final  String e3_a2_Name = "SCXML_consumeExternalTrigger";
-//	public static final  String e3_a2_Action = externalQueueName+" \u2254 "+externalQueueName+" \u2216 {"+consumedTriggerParameterName+"}";
-//	public static final  String e3_a2_Comment = "";
 
 	
 	//e4
 	public static final  String noTriggeredTransitionsEnabledEventName = "SCXML_noTriggeredTransitionsEnabled";
-//	public static final  String consumedInternalTriggerParameterName = "SCXML_it";
 	public static final  String noTriggeredTransitionsEnabledEventComment = "";
-//	public static final  String e4_g1_Name = "typeof_"+consumedInternalTriggerParameterName;
-//	public static final  String e4_g1_Predicate = consumedInternalTriggerParameterName+"  ∈ "+internalQueueName;
-//	public static final  String e4_g1_Comment = "";
-//	public static final  String e4_g2_Name = "SCXML_isComplete";
-//	public static final  String e4_g2_Predicate = completionFlagName+" = TRUE";
-//	public static final  String e4_g2_Comment = "";
-//	public static final  String e4_a1_Name = "SCXML_notComplete";
-//	public static final  String e4_a1_Action = completionFlagName+" \u2254 FALSE";
-//	public static final  String e4_a1_Comment = "";
-//	public static final  String e4_a2_Name = "SCXML_consumeInternalTrigger";
-//	public static final  String e4_a2_Action = internalQueueName+" \u2254 ("+internalQueueName+" \u222a "+raisedInternalTriggersParameterName+") \u2216 {"+consumedInternalTriggerParameterName+"}";
-//	public static final  String e4_a2_Comment = "";
 
 	//for use in events that define a specific trigger:
 	public static final String trigGd_Name = "SCXML_trigger";
@@ -470,27 +417,10 @@ public class Strings {
 	//e5 - un-triggered transitions
 	public static final  String untriggeredEventName = "SCXML_futureUntriggeredTransitionSet";
 	public static final  String untriggeredEventComment =  "abstract basis of future event representing untriggered transitions";
-//	public static final  String e5_g1_Name = "SCXML_isNotComplete";
-//	public static final  String e5_g1_Predicate = completionFlagName+" = FALSE";
-//	public static final  String e5_g1_Comment = "";
-//	public static final  String e5_a1_Name = "SCXML_NotComplete";
-//	public static final  String e5_a1_Action = completionFlagName+" \u2254 FALSE";
-//	public static final  String e5_a1_Comment = "";
 	
 	//e6 - completion event
 	public static final  String completionEventName = "SCXML_NoUntriggeredTransitions";
-//	public static final  String e6_g1_Name = "SCXML_isNotComplete";
-//	public static final  String e6_g1_Predicate = completionFlagName+" = FALSE";
-//	public static final  String e6_g1_Comment = "";
-//	public static final  String e6_g2_Name = "SCXML_hasNoDequeuedTriggers";
-//	public static final  String e6_g2_Predicate = dequeuedTriggerSetName+"=  \u2205";
-//	public static final  String e6_g2_Comment = "";
-//	public static final  String e6_a1_Name = "SCXML_Complete";
-//	public static final  String e6_a1_Action = completionFlagName+" \u2254 TRUE";
-//	public static final  String e6_a1_Comment = "";
-//	public static final  String e6_a2_Name = "SCXML_clearDequeuedTriggers";
-//	public static final  String e6_a2_Action = dequeuedTriggerSetName+" \u2254 \u2205";
-//	public static final  String e6_a2_Comment = "";
+
 
 	//this is the name of the guard that is added to completion events and other combinations to force a finalised transition to complete.
 	public static String CompletionGuardName(String label) {
