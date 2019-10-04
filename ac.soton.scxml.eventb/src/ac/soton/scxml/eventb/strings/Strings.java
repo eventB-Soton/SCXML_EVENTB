@@ -149,15 +149,12 @@ public class Strings {
 	 * @return
 	 */
 	public static String SCXMLSTATE_INV_PREDICATE(String trigger, String raw_predicate) {
-		return  (trigger==null? "" : trigger+"\u2208"+ internalQueueName+"\u2228 ") +
-				"("+isComplete_guardPredicate+									//untriggered completion flag is TRUE
-//				" \u2227 " + hasNoDequeuedTriggers_guardPredicate+ 			//no dequeued triggers (not needed - this is implied by the completion flag being TRUE)
-				" \u2227 " + internalQueueName+" = \u2205" + 				//internal Q is empty
-				" \u21d2 ("+ PREDICATE(raw_predicate) + "))" ;
-	}
-	
-
-	
+		if (trigger==null) {
+			return isNotComplete_guardPredicate+" \u2228 "+ PREDICATE(raw_predicate);
+		}else {
+			return trigger+"\u2208"+internalQueueName+" \u2228 "+trigger+"\u2208"+dequeuedTriggerSetName+" \u2228 "+ PREDICATE(raw_predicate);
+		}
+	}	
 
 	public static String PREDICATE(String predicate) {
 		String pred = convertLocation(
