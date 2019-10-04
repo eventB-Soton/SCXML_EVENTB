@@ -72,8 +72,6 @@ public class ScxmlInitialTransitionTypeRule extends AbstractSCXMLImporterRule im
 		ScxmlStateType stateContainer = (ScxmlStateType) Find.containing(ScxmlPackage.Literals.SCXML_STATE_TYPE, sourceElement.eContainer().eContainer());
 		//the immediate container state may be in a parallel. If so, the true parent state is the state containing the parallel
 		ScxmlStateType parentState = findTrueParentState(sourceElement);
-				
-		//ScxmlScxmlType scxmlContainer = (ScxmlScxmlType) Find.containing(ScxmlPackage.Literals.SCXML_SCXML_TYPE, sourceElement);
 		
 		boolean dependOnIncomers = parentState==null? false :  isATarget(parentState);
 		
