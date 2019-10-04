@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 University of Southampton.
+ *  Copyright (c) 2016-2019 University of Southampton.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -12,7 +12,9 @@ package ac.soton.scxml.eventb.rules;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
 import ac.soton.scxml.ScxmlAssignType;
@@ -32,6 +34,7 @@ import ac.soton.emf.translator.TranslationDescriptor;
 import ac.soton.emf.translator.configuration.IRule;
 import ac.soton.emf.translator.utils.Find;
 import ac.soton.eventb.statemachines.AbstractNode;
+import ac.soton.eventb.statemachines.Initial;
 import ac.soton.eventb.statemachines.State;
 import ac.soton.eventb.statemachines.Statemachine;
 import ac.soton.eventb.statemachines.StatemachinesPackage;
@@ -107,10 +110,37 @@ public class ScxmlInitialTransitionTypeRule extends AbstractSCXMLImporterRule im
 				if (parent instanceof State && ((State)parent).getIncoming().isEmpty()){
 					return false;
 				}
+				//if the parent is the target of an initial transition, firing late is not sufficient because
+				// its incomers are elaborated by this rule as well.
+				// in this case we need to fire this rule in order starting from the outer nesting and working inwards
+				if (parentIsTargetOfInitial((State)parent)) {
+					@SuppressWarnings("unchecked")
+					Set<AbstractNode> done = (Set<AbstractNode>) storage.fetch("doneInitialisationTargets");
+					if (done==null) return false;
+					if (done.contains(parent)) {
+						int ii=0;
+					}else {
+						return false;
+					}
+				}
 			}
 			refinements.add(ref);
 		}
 		return true;
+	}
+
+	/**
+	 * checks whether the given state is the target of an initial transition
+	 * @param state
+	 * @return
+	 */
+	private boolean parentIsTargetOfInitial(State state) {
+		for (Transition t : state.getIncoming()) {
+			if (t.getSource() instanceof Initial) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -252,6 +282,14 @@ public class ScxmlInitialTransitionTypeRule extends AbstractSCXMLImporterRule im
 				}
 			}	
 			
+			//store the target to indicate it has all its incomers elaborated with initial transitions
+			@SuppressWarnings("unchecked")
+			Set<AbstractNode> done = (Set<AbstractNode>) storage.fetch("doneInitialisationTargets");
+			if (done==null) {
+				done = new HashSet<AbstractNode>();
+			}
+			done.add(transition.getTarget());
+			storage.stash("doneInitialisationTargets", done);
 		}
 		return Collections.emptyList();
 	}
