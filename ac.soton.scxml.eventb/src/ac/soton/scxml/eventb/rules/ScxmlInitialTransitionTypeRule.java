@@ -222,7 +222,7 @@ public class ScxmlInitialTransitionTypeRule extends AbstractSCXMLImporterRule im
 		ScxmlTransitionType scxmlTransition = ((ScxmlTransitionType) sourceElement);
 
 		//TODO: calculate finalised
-		boolean finalised = false;		// if true => no more refinements
+		Integer finalised = -1;		// finalised refinement level.. if <1 - not finalised
 		
 		for (Refinement ref : refinements){
 			
@@ -245,17 +245,18 @@ public class ScxmlInitialTransitionTypeRule extends AbstractSCXMLImporterRule im
 					raiseList = raiseList.length()==0? raise.getEvent() : ","+raise.getEvent();
 				}
 			}	
+			
 			// no guard needed if there are no raised triggers.. unless..
 			// refinement has been finalised.. in which case we specify that no future triggers will ever be raised by this event
-			if (!"".equals(raiseList) || finalised==true){  
+			if (!"".equals(raiseList) || (ref.level>=finalised)){
 				raiseList = "".equals(raiseList)? "\u2205" : "{"+raiseList+" }";
 				Guard guard =  (Guard) Make.guard(
 						Strings.specificRaisedInternalTriggersGuardName,false,
-						Strings.specificRaisedInternalTriggersGuardPredicate(raiseList, finalised),
+						Strings.specificRaisedInternalTriggersGuardPredicate(raiseList, -1), //finalised), 
 						Strings.specificRaisedInternalTriggersGuardComment); 
 				transition.getGuards().add(guard);
 			}
-				
+
 			//add any explicit guards of the scxml transition
 			List<IumlbScxmlAdapter> gds = new IumlbScxmlAdapter(scxmlTransition).getGuards();
 			for (IumlbScxmlAdapter gd : gds){

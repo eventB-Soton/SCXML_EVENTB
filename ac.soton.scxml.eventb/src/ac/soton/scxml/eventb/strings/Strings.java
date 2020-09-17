@@ -371,6 +371,20 @@ public class Strings {
 	public static final  String raisedInternalTriggersActionName = "SCXML_raiseInternalTriggers";
 	public static final  String raisedInternalTriggersActionAction = internalQueueName+" ≔ "+internalQueueName+" \u222a "+raisedInternalTriggersParameterName;
 	public static final  String raisedInternalTriggersActionComment = "";
+
+	//Strings for making a guard to go in a refinement of the future external trigger event
+	// so that it does NOT raise a specific trigger 
+	public static final String specificNotRaisedInternalTriggersGuardName = "notRaisedInternalTriggers";
+	
+	/**
+	 * @param notRaiseList
+	 * @param finalised
+	 * @return
+	 */
+	public static String specificNotRaisedInternalTriggersGuardPredicate(String notRaisedList, boolean finalised) {
+		return  notRaisedList + " \u2229 " + raisedInternalTriggersParameterName + "= \u2205";
+	}
+	public static final String specificNotRaisedInternalTriggersGuardComment = "";
 	
 	//Strings for making a guard to go in a refinement of the future external trigger event
 	// so that it raises a specific trigger 
@@ -381,9 +395,8 @@ public class Strings {
 	 * @param finalised
 	 * @return
 	 */
-	public static String specificRaisedInternalTriggersGuardPredicate(String raiseList, boolean finalised) {
-		//String test = (finalised? raiseList + " = " : raiseList + " \u2286 ") + raisedInternalTriggersParameterName;
-		return (finalised? raiseList + " = " : raiseList + " \u2286 ") + raisedInternalTriggersParameterName;
+	public static String specificRaisedInternalTriggersGuardPredicate(String raiseList, int finalised) {
+		return (finalised>0? raiseList + " = " : raiseList + " \u2286 ") + raisedInternalTriggersParameterName;
 	}
 	
 	public static final String specificRaisedInternalTriggersGuardComment = "";
