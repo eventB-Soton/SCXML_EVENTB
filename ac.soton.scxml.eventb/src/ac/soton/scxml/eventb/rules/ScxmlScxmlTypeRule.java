@@ -221,16 +221,17 @@ public class ScxmlScxmlTypeRule extends AbstractSCXMLImporterRule implements IRu
 	 * @return
 	 */
 	private EventBNamedCommentedComponentElement refine(EObject sourceElement, EventBNamedCommentedComponentElement component, String refineName, String comment) {
-		URI uri = EcoreUtil.getURI(sourceElement);
-		uri = uri.trimFragment().trimSegments(1);
-		uri = uri.appendSegment(component.getName());
-		uri = uri.appendFileExtension(
-				component instanceof Machine? "bum" :
-					component instanceof Context? "buc" :
-						"xmb");
-		uri = uri.appendFragment(component.getReference());
+		URI baseUri = EcoreUtil.getURI(sourceElement).trimFragment().trimSegments(1);
+		String fileExtension = 	component instanceof Machine? "bum" :
+								component instanceof Context? "buc" :
+															"xmb" ;
+		URI abstractUri = baseUri.appendSegment(component.getName()).appendFileExtension(fileExtension);
+		abstractUri = abstractUri.appendFragment(component.getReference());
+		
+		//URI concreteResourceUri = baseUri.appendSegment(refineName).appendFileExtension(fileExtension);
+
 		AbstractElementRefiner refiner = ElementRefinerRegistry.getRegistry().getRefiner(component);
-		Map<EObject,EObject> copy = refiner.refineWithComponentName(uri,  component, refineName);
+		Map<EObject,EObject> copy = refiner.refineWithComponentName(abstractUri,  component, refineName);
 		EventBNamedCommentedComponentElement refinement = (EventBNamedCommentedComponentElement) copy.get(component);
 		//refinement.setName(refineName);
 		refinement.setComment(comment);		
