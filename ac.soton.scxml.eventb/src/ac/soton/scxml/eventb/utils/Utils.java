@@ -24,13 +24,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import ac.soton.scxml.ScxmlDataType;
-import ac.soton.scxml.ScxmlFinalType;
-import ac.soton.scxml.ScxmlInitialType;
-import ac.soton.scxml.ScxmlLogType;
-import ac.soton.scxml.ScxmlScxmlType;
-import ac.soton.scxml.ScxmlStateType;
-import ac.soton.scxml.ScxmlTransitionType;
+import org.eclipse.emf.ecore.xml.type.AnyType;
 import org.eventb.emf.core.EventBElement;
 import org.eventb.emf.core.EventBNamed;
 import org.eventb.emf.core.Project;
@@ -44,6 +38,15 @@ import ac.soton.emf.translator.TranslationDescriptor;
 import ac.soton.emf.translator.utils.Find;
 import ac.soton.eventb.emf.core.extension.navigator.refiner.AbstractElementRefiner;
 import ac.soton.eventb.emf.core.extension.navigator.refiner.ElementRefinerRegistry;
+import ac.soton.scxml.ScxmlAssignType;
+import ac.soton.scxml.ScxmlDataType;
+import ac.soton.scxml.ScxmlFinalType;
+import ac.soton.scxml.ScxmlInitialType;
+import ac.soton.scxml.ScxmlLogType;
+import ac.soton.scxml.ScxmlRaiseType;
+import ac.soton.scxml.ScxmlScxmlType;
+import ac.soton.scxml.ScxmlStateType;
+import ac.soton.scxml.ScxmlTransitionType;
 import ac.soton.scxml.eventb.rules.Trigger;
 import ac.soton.scxml.eventb.strings.Strings;
 
@@ -95,7 +98,14 @@ public class Utils {
 	public static Event getOrCreateEvent(Refinement ref, List<TranslationDescriptor> descriptors, Trigger trigger, Set<ScxmlTransitionType> combi, int depth) {
 		printCombi("getOrCreateEvent",combi, ref);
 		String eventName = getCombiEventName(trigger.getName(), combi);		//PARAMETERS REMOVED... ref.machine, descriptors,
-		Event ev = getOrCreateEvent(ref.machine, false, descriptors,eventName);
+		Event ev = getOrCreateEvent(ref.machine, false, descriptors,eventName); 
+		if ("null".equals(trigger.getName())) {
+			ev.setComment("<INTERNAL><PRIORITY=3>  UNTRIGGERED TRANSITIONS "+ev.getComment());	//annotate transition events as internal for scenario checker 
+		}else if (trigger.isInternal()){
+			ev.setComment("<INTERNAL><PRIORITY=2>  INTERNAL TRIGGERED TRANSITIONS "+ev.getComment());	//annotate transition events as internal for scenario checker 
+		}else {
+			ev.setComment("<INTERNAL><PRIORITY=1>  EXTERNAL TRIGGERED TRANSITIONS "+ev.getComment());	//annotate transition events as internal for scenario checker 
+		}
 		String refinedEventName = getRefinesName(ref, trigger, combi, depth);
 		if (!ev.getRefinesNames().contains(refinedEventName)){
 			ev.getRefinesNames().add(refinedEventName);
@@ -107,7 +117,7 @@ public class Utils {
 		}
 		//add trigger guard at the correct refinement level
 		//(this is done as a descriptor so that the translator can decide whether it is needed (it may already be there by extension)
-		if (!"null".equals(trigger.getName()) && ref.level>trigger.getRefinementLevel()){
+		if (!"null".equals(trigger.getName()) && ref.level>=trigger.getRefinementLevel()){
 			Guard trig = (Guard) Make.guard(Strings.trigGd_Name, false, Strings.trigGd_Predicate(trigger), Strings.trigGd_Comment);
 			descriptors.add(Make.descriptor(ev,MachinePackage.Literals.EVENT__GUARDS,trig,0));
 		}
@@ -115,17 +125,79 @@ public class Utils {
 	}
 	
 	/**
-	 * Returns the starting refinement level for this scxml element
-	 * This is given in a 'refinement' iumlb:attribute attached to the element,
+	 * Returns the starting refinement level for this scxml element.
+	 * The normal policy for refinement level is that it is annotated or if omitted, the same as its parent. 
+	 * (This is the basic behaviour implemented by doGetRefinement Level)
+	 * However, for convenience, some types of elements need a different behaviour. 
+	 * For example, states are annotated with the refinement level that their nested state-machines appear - and they are first used in their parent statemachines refinement.
+	 * Similarly transitions and their content should be used at the refinement level of their parent state.
+	 * 
+	 * The refinement level of a transition is always the same as its parent (recursively).
+	 * The content of a transition is either annotated or the same as its parent transition (recursively).
+	 * The refinement level of a state, final or initial is always the same as its parent's annotated level (non-recursively)...
+	 * The refinement level is  given in a 'refinement' iumlb:attribute attached to the element,
 	 * or, if none, the refinement level of its parent,
 	 * or, if none, 0
 	 * 
 	 * @param scxmlElement
 	 * @return
 	 */
-	public static int getRefinementLevel(EObject scxmlElement){
-		return new IumlbScxmlAdapter(scxmlElement).getRefinementLevel();
+	public static int getRefinementLevel(Object scxml){
+		EObject scxmlElement;
+		IumlbScxmlAdapter scxmlAdapter;
+		if (scxml instanceof IumlbScxmlAdapter) {
+			scxmlElement = ((IumlbScxmlAdapter) scxml).target;
+			scxmlAdapter = (IumlbScxmlAdapter) scxml;
+		}else {
+			scxmlElement = (EObject) scxml;
+			scxmlAdapter = new IumlbScxmlAdapter(scxmlElement);
+		}
+		if (scxmlElement instanceof ScxmlTransitionType) {
+			//use these rules but start from the containing state
+			return getRefinementLevel(scxmlElement.eContainer());
+		}else if (
+				scxmlElement instanceof ScxmlRaiseType ||
+				scxmlElement instanceof ScxmlAssignType ||
+				scxmlElement instanceof AnyType && (
+					"parameter".equals(scxmlAdapter.featureName) ||
+					"guard".equals(scxmlAdapter.featureName)
+					)
+				) {
+			if (scxmlAdapter.getBasicRefinementLevel()<0) {
+				return getRefinementLevel(scxmlElement.eContainer());
+			}
+		}else if (
+				scxmlElement instanceof ScxmlStateType || 
+				scxmlElement instanceof ScxmlFinalType ||
+				scxmlElement instanceof ScxmlInitialType){
+			//use the basic rules for getting refinement level but starting from the states parent
+			return Utils.doGetRefinementLevel(scxmlElement.eContainer());
+		}
+		//default - use the basic rules for getting refinement level
+		return Utils.doGetRefinementLevel(scxmlElement);
 	}
+	
+	/**
+	 * Returns the starting semantic refinement level for this SCXML element
+	 * This is given by the 'refinement' iumlb:attribute attached to the element,
+	 * or, if none, the refinement level of its parent,
+	 * or, if none, 0
+	 * 
+	 * @param scxmlElement
+	 * @return
+	 */
+	private static int doGetRefinementLevel(EObject scxmlElement){
+		int refinementLevel = new IumlbScxmlAdapter(scxmlElement).getBasicRefinementLevel();
+		if (refinementLevel < 0) {
+			if (scxmlElement.eContainer()==null){
+				refinementLevel=0;
+			}else{ 
+				refinementLevel= doGetRefinementLevel(scxmlElement.eContainer());
+			}
+		}
+		return refinementLevel;
+	}
+
 	
 	/**
 	 * refine - this makes a new element that refines the abstract one
@@ -223,7 +295,7 @@ public class Utils {
 	 * @param name
 	 * @return
 	 */
-		private static EventBNamed findNamedElement(EList<? extends EventBNamed> collection, String name){
+		public static EventBNamed findNamedElement(EList<? extends EventBNamed> collection, String name){
 			for (EventBNamed element : collection){
 				if (name.equals(element.getName())) return element;
 			}
@@ -248,10 +320,8 @@ public class Utils {
 		}else{
 			if ("null".equals(trigger.getName())){
 					refinedEventName = Strings.untriggeredEventName;
-			}else if(trigger.isInternal()){ 	//raisedTriggers.containsKey(triggerName)){
-				refinedEventName = Strings.consumeInternalTriggerEventName;
 			}else{
-				refinedEventName = Strings.consumeExternalTriggerEventName;								
+				refinedEventName = Strings.consumeTriggerEventName;								
 			}
 		}
 		return refinedEventName;

@@ -64,7 +64,7 @@ public class ScxmlStateType2StateRule extends AbstractSCXMLImporterRule implemen
 	@Override
 	public boolean dependenciesOK(EObject sourceElement, final List<TranslationDescriptor> translatedElements) throws Exception  {
 		refinements.clear();
-		int refinementLevel = Utils.getRefinementLevel(sourceElement.eContainer()); //refinement level is from the parent, not this ScxmlState. 
+		int refinementLevel = Utils.getRefinementLevel(sourceElement);  
 		int depth = getRefinementDepth(sourceElement);
 		for (int i=refinementLevel; i<=depth; i++){
 			Machine m = (Machine) Find.translatedElement(translatedElements, null, null, MachinePackage.Literals.MACHINE, Utils.getMachineName(scxmlContainer,i));
@@ -103,9 +103,10 @@ public class ScxmlStateType2StateRule extends AbstractSCXMLImporterRule implemen
 				if (refLevel==ref.level){
 					String name = (String)inv.getAnyAttributeValue("name");
 					String derived = (String)inv.getAnyAttributeValue("derived");
+					String trigger = (String)inv.getAnyAttributeValue("trigger");
 					String predicate = (String)inv.getAnyAttributeValue("predicate");
 					String comment = (String)inv.getAnyAttributeValue("comment");
-					Invariant invariant =  (Invariant) Make.invariant(name,Boolean.parseBoolean(derived),Strings.INV_PREDICATE(predicate),comment); 
+					Invariant invariant =  (Invariant) Make.invariant(name,Boolean.parseBoolean(derived), Strings.SCXMLSTATE_INV_PREDICATE(trigger, predicate),comment); 
 					state.getInvariants().add(invariant);
 				}
 			}

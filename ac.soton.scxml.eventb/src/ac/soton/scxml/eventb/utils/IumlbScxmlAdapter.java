@@ -29,6 +29,8 @@ public class IumlbScxmlAdapter {
 	  
 	  protected Integer refinementLevel = null;
 
+	  protected String featureName = null;
+	  
 		 /**
 	   * Creates an instance.
 	   */
@@ -45,7 +47,13 @@ public class IumlbScxmlAdapter {
 	    adapt(target);
 	  }
 
-	  /**
+	  public IumlbScxmlAdapter(EObject target, String featureName) 
+	  {
+		  adapt(target);
+		  this.featureName = featureName;
+	  }
+
+	/**
 	   * makes this instance adapt the given target
 	   * @param target
 	   */
@@ -91,40 +99,13 @@ public class IumlbScxmlAdapter {
 			for (int i=0; i< fm.size(); i++){
 				EStructuralFeature sf = fm.getEStructuralFeature(i);
 				if (featureName.equals(sf.getName()) && fm.getValue(i) instanceof EObject){
-					ret.add(new IumlbScxmlAdapter((EObject)fm.getValue(i)));
+					ret.add(new IumlbScxmlAdapter((EObject)fm.getValue(i),featureName));
 				}
 			}
 			return ret;	  
 	  }
 	  
 	  
-	/**
-	 * Returns the starting semantic refinement level for this SCXML element
-	 * This is given by the 'refinement' iumlb:attribute attached to the element,
-	 * or, if none, the refinement level of its parent,
-	 * or, if none, 0
-	 * 
-	 * @param scxmlElement
-	 * @return
-	 */
-	public int getRefinementLevel(){
-		if (refinementLevel==null){
-			refinementLevel = getBasicRefinementLevel();
-			if (refinementLevel < 0) {
-				if (target.eContainer()==null){
-					refinementLevel=0;
-				}else{
-//					EObject oldTarget = target;
-//					int refLevel = this.adapt(target.eContainer()).getRefinementLevel();
-//					this.adapt(oldTarget);
-//					refinementLevel=refLevel; 
-					refinementLevel=new IumlbScxmlAdapter(target.eContainer()).getRefinementLevel();
-				}
-			}
-		}
-		return refinementLevel;
-		
-	}
 	
 	/**
 	 * Returns the refinement attribute value for this SCXML element
@@ -157,5 +138,33 @@ public class IumlbScxmlAdapter {
 	public List<IumlbScxmlAdapter> getGuards() {
 		return getAnyChildren("guard");	
 	}
-		
+
+	public boolean isVariable() {
+		Object dataKind = getAnyAttributeValue("dataKind");
+		return (!(dataKind instanceof String) ||  "Variable".equalsIgnoreCase(((String)dataKind).trim()));
+	}
+	
+	public boolean isConstant() {
+		Object dataKind = getAnyAttributeValue("dataKind");
+		return (dataKind instanceof String && "Constant".equalsIgnoreCase(((String)dataKind).trim()));
+	}
+	
+	public boolean isCarrierSet() {
+		Object dataKind = getAnyAttributeValue("dataKind");
+		return (dataKind instanceof String && "CarrierSet".equalsIgnoreCase(((String)dataKind).trim()));
+	}
+
+	public Integer getFinalised() {
+		Object finalised = getAnyAttributeValue("finalised");
+		if (finalised instanceof String) {
+			try {
+				return Integer.parseInt((String)finalised);
+			}catch (Exception e){
+				return -1;
+			}
+		}else{
+			return -1;
+		}
+	}
+	
 }

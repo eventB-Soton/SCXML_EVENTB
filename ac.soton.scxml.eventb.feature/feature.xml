@@ -2,10 +2,10 @@
 <feature
       id="ac.soton.scxml.eventb.feature"
       label="%featureName"
-      version="0.1.0.qualifier"
+      version="0.2.1.release"
       provider-name="%featureVendor"
-      plugin="ac.soton.iumlb.branding"
-      license-feature="org.rodinp.license"
+      plugin="ac.soton.scxml.eventb.branding"
+      license-feature="org.rodinp.licence"
       license-feature-version="1.0.0.release">
 
    <description>
@@ -29,14 +29,16 @@
       <import plugin="org.rodinp.core" version="1.7.0" match="compatible"/>
       <import plugin="org.eventb.emf.core" version="5.0.0" match="compatible"/>
       <import plugin="org.eventb.emf.persistence" version="3.4.0" match="compatible"/>
-      <import plugin="ac.soton.eventb.emf.core.extension" version="4.0.0" match="compatible"/>
-      <import plugin="ac.soton.eventb.emf.core.extension.navigator" version="4.4.0" match="compatible"/>
-      <import plugin="ac.soton.eventb.emf.diagrams" version="4.0.0" match="compatible"/>
+      <import plugin="ac.soton.eventb.emf.core.extension" version="5.0.0" match="compatible"/>
+      <import plugin="ac.soton.eventb.emf.core.extension.navigator" version="5.0.0" match="compatible"/>
       <import plugin="ac.soton.eventb.emf.diagrams.generator" version="4.0.0" match="compatible"/>
       <import plugin="ac.soton.emf.translator" version="3.0.0" match="compatible"/>
       <import plugin="ac.soton.emf.translator.eventb" version="0.0.1" match="compatible"/>
       <import plugin="ac.soton.eventb.statemachines" version="4.0.0" match="compatible"/>
       <import plugin="ac.soton.scxml" version="0.0.1" match="compatible"/>
+      <import plugin="org.rodinp.keyboard.ui" version="2.1.0" match="compatible"/>
+      <import plugin="org.eventb.core" version="3.3.1" match="compatible"/>
+      <import plugin="ac.soton.eventb.emf.diagrams" version="5.0.0" match="compatible"/>
    </requires>
 
    <plugin
@@ -47,7 +49,7 @@
          unpack="false"/>
 
    <plugin
-         id="ac.soton.iumlb.branding"
+         id="ac.soton.scxml.eventb.branding"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
