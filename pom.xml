@@ -8,7 +8,7 @@
   <name>SCXML UML-B_EventB Root</name>
   <description>Root artifact for SCXML UML-B_EventB</description>
   <!-- REQUIRED: Version number (using semantic versioning) -->
-  <version>0.2.1-SNAPSHOT</version>
+  <version>0.2.1.release</version>
   <packaging>pom</packaging>
   <parent>
     <!-- REQUIRED: Group ID is the feature ID -->
@@ -16,7 +16,7 @@
     <!-- Name of the release engineering artifact -->
     <artifactId>releng</artifactId>
     <!-- REQUIRED: Version number of the release engineering artifact -->
-    <version>0.2.1-SNAPSHOT</version>
+    <version>0.2.1.release</version>
     <!-- REQUIRED: Relative path to the release engineering artifact -->
     <relativePath>./ac.soton.scxml.eventb.releng</relativePath>
   </parent>
